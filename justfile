@@ -1,3 +1,5 @@
+set shell := ["bash", "-lc"]
+
 default:
     @just --list
 
@@ -25,6 +27,9 @@ status:
 
 logs *args:
     @bash ./just/qqmail-macos-service.sh logs {{args}}
+
+test:
+    @bash ./tests/imap_regression.sh
 
 plist:
     @bash ./just/qqmail-macos-service.sh plist
