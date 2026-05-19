@@ -248,10 +248,7 @@ impl QqMailServer {
     }
 
     #[tool(description = "List all mailboxes/folders available in the QQ IMAP account.")]
-    async fn list_mailboxes(
-        &self,
-        _params: rmcp::handler::server::wrapper::Parameters<serde_json::Value>,
-    ) -> Result<CallToolResult, McpError> {
+    async fn list_mailboxes(&self) -> Result<CallToolResult, McpError> {
         match mail::imap::list_mailboxes(&self.config).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
             Err(e) => Err(tool_error(&e)),
@@ -433,5 +430,33 @@ mod tests {
         let sanitized = sanitize_message_with_secrets(&"x".repeat(240), None, None);
         assert_eq!(sanitized.len(), 203);
         assert!(sanitized.ends_with("..."));
+    }
+
+    #[test]
+    fn test_tool_input_schemas_are_objects() {
+        let config = Arc::new(AppConfig {
+            qqmail_address: "test@qq.com".to_string(),
+            qqmail_auth_code: "auth-code".to_string(),
+            smtp_host: "smtp.qq.com".to_string(),
+            smtp_port: 465,
+            imap_host: "imap.qq.com".to_string(),
+            imap_port: 993,
+            mcp_bind: "127.0.0.1:0".parse().unwrap(),
+            mcp_access_token: "token".to_string(),
+        });
+        let server = QqMailServer::new(config);
+
+        let tools = server.tool_router.list_all();
+        assert_eq!(tools.len(), 7);
+        for tool in tools {
+            assert_eq!(
+                tool.input_schema
+                    .get("type")
+                    .and_then(|value| value.as_str()),
+                Some("object"),
+                "tool {} input schema must be an object schema",
+                tool.name
+            );
+        }
     }
 }
