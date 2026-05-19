@@ -17,9 +17,24 @@ pub struct QqMailServer {
 }
 
 fn sanitize_message(message: &str) -> String {
-    let sanitized = message
-        .replace(&std::env::var("QQMAIL_AUTH_CODE").unwrap_or_default(), "***")
-        .replace(&std::env::var("MCP_ACCESS_TOKEN").unwrap_or_default(), "***");
+    sanitize_message_with_secrets(
+        message,
+        std::env::var("QQMAIL_AUTH_CODE").ok().as_deref(),
+        std::env::var("MCP_ACCESS_TOKEN").ok().as_deref(),
+    )
+}
+
+fn sanitize_message_with_secrets(
+    message: &str,
+    qqmail_auth_code: Option<&str>,
+    mcp_access_token: Option<&str>,
+) -> String {
+    let mut sanitized = message.to_string();
+    for value in [qqmail_auth_code, mcp_access_token].into_iter().flatten() {
+        if !value.is_empty() {
+            sanitized = sanitized.replace(value, "***");
+        }
+    }
     if sanitized.len() > 200 {
         format!("{}...", &sanitized[..200])
     } else {
@@ -395,5 +410,28 @@ mod tests {
         let err = validate_uid(0).unwrap_err();
         let json = serde_json::to_string(&err).unwrap();
         assert!(json.contains("invalid params") || json.contains("-32602"));
+    }
+
+    #[test]
+    fn test_sanitize_message_preserves_text_when_secrets_unset() {
+        assert_eq!(sanitize_message_with_secrets("imap failed", None, None), "imap failed");
+    }
+
+    #[test]
+    fn test_sanitize_message_masks_configured_secrets() {
+        let sanitized = sanitize_message_with_secrets(
+            "secret-code and secret-token leaked",
+            Some("secret-code"),
+            Some("secret-token"),
+        );
+
+        assert_eq!(sanitized, "*** and *** leaked");
+    }
+
+    #[test]
+    fn test_sanitize_message_truncates_long_messages() {
+        let sanitized = sanitize_message_with_secrets(&"x".repeat(240), None, None);
+        assert_eq!(sanitized.len(), 203);
+        assert!(sanitized.ends_with("..."));
     }
 }

@@ -17,13 +17,13 @@ fn validate_required(
     qqmail_auth_code: &str,
     mcp_access_token: &str,
 ) -> Result<(), String> {
-    if qqmail_address.is_empty() {
+    if qqmail_address.trim().is_empty() {
         return Err("QQMAIL_ADDRESS must not be empty".into());
     }
-    if qqmail_auth_code.is_empty() {
+    if qqmail_auth_code.trim().is_empty() {
         return Err("QQMAIL_AUTH_CODE must not be empty".into());
     }
-    if mcp_access_token.is_empty() {
+    if mcp_access_token.trim().is_empty() {
         return Err("MCP_ACCESS_TOKEN must not be empty".into());
     }
     Ok(())
@@ -106,5 +106,26 @@ mod tests {
     fn test_validate_all_present() {
         let result = validate_required("test@qq.com", "code", "token");
         assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_validate_blank_address_rejected() {
+        let result = validate_required("   ", "code", "token");
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("QQMAIL_ADDRESS"));
+    }
+
+    #[test]
+    fn test_validate_blank_auth_code_rejected() {
+        let result = validate_required("test@qq.com", "\t", "token");
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("QQMAIL_AUTH_CODE"));
+    }
+
+    #[test]
+    fn test_validate_blank_access_token_rejected() {
+        let result = validate_required("test@qq.com", "code", "\n");
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("MCP_ACCESS_TOKEN"));
     }
 }

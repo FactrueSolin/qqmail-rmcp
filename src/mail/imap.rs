@@ -540,6 +540,29 @@ mod tests {
     }
 
     #[test]
+    fn test_has_attachment_content_type_filename_param() {
+        let headers = vec![
+            ("Content-Type".to_string(), "image/png; filename=chart.png".to_string()),
+        ];
+        assert!(has_attachment_content_type(&headers));
+    }
+
+    #[test]
+    fn test_has_attachment_content_type_case_insensitive_key() {
+        let headers = vec![
+            ("content-type".to_string(), "application/pdf; name=report.pdf".to_string()),
+        ];
+        assert!(has_attachment_content_type(&headers));
+    }
+
+    #[test]
+    fn test_parse_email_headers_decodes_encoded_subject() {
+        let raw = b"Subject: =?UTF-8?B?5rWL6K+V?=\r\n\r\n";
+        let headers = parse_email_headers(raw);
+        assert_eq!(get_header_value(&headers, "Subject"), "测试");
+    }
+
+    #[test]
     fn test_list_messages_offset_boundary_empty() {
         let uids: Vec<u32> = vec![];
         let offset = Some(0);
