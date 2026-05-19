@@ -21,8 +21,19 @@ fi
 
 echo "[imap-regression] verifying UID mutation operations reject nonexistent messages before side effects"
 uid_check_count=$(grep -Fc 'assert_uid_exists(&mut session' src/mail/imap.rs)
-if [ "$uid_check_count" -lt 3 ]; then
-  echo "[imap-regression] FAIL: expected mark/delete/move to check UID existence, found $uid_check_count checks" >&2
+if [ "$uid_check_count" -lt 2 ]; then
+  echo "[imap-regression] FAIL: expected delete/move to check UID existence, found $uid_check_count checks" >&2
+  exit 1
+fi
+
+echo "[imap-regression] verifying mark_message reads current flags before writing QQ-compatible mutations"
+if ! grep -Fq 'session.uid_fetch(req.uid.to_string(), "(UID FLAGS)")' src/mail/imap.rs; then
+  echo "[imap-regression] FAIL: mark_message must fetch current UID FLAGS before STORE" >&2
+  exit 1
+fi
+
+if ! grep -Fq 'plan_flag_mutation(' src/mail/imap.rs || ! grep -Fq 'test_plan_flag_mutation_skips_noop_false_for_absent_flag' src/mail/imap.rs; then
+  echo "[imap-regression] FAIL: mark_message must skip no-op flag mutations" >&2
   exit 1
 fi
 
