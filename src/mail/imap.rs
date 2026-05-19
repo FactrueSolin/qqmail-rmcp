@@ -90,15 +90,8 @@ pub async fn list_mailboxes(config: &AppConfig) -> Result<String, MailError> {
         let list_result = session.list(None, Some("*"))?;
         for mb in list_result.iter() {
             let name: String = mb.name().to_string();
-            let delimiter: String = mb
-                .delimiter()
-                .unwrap_or("")
-                .to_string();
-            let attrs: Vec<String> = mb
-                .attributes()
-                .iter()
-                .map(|a| format!("{:?}", a))
-                .collect();
+            let delimiter: String = mb.delimiter().unwrap_or("").to_string();
+            let attrs: Vec<String> = mb.attributes().iter().map(|a| format!("{:?}", a)).collect();
 
             mailboxes.push(serde_json::json!({
                 "name": name,
@@ -110,7 +103,12 @@ pub async fn list_mailboxes(config: &AppConfig) -> Result<String, MailError> {
         Ok(serde_json::json!({ "mailboxes": mailboxes }).to_string())
     })
     .await
-    .map_err(|e| MailError::Io(std::io::Error::new(std::io::ErrorKind::Other, e.to_string())))?
+    .map_err(|e| {
+        MailError::Io(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            e.to_string(),
+        ))
+    })?
 }
 
 fn get_header_value(headers: &[(String, String)], name: &str) -> String {
@@ -156,6 +154,20 @@ fn flag_to_str(flag: &imap::types::Flag<'_>) -> &'static str {
     }
 }
 
+const MESSAGE_SUMMARY_FETCH_ITEMS: &str = "(UID FLAGS RFC822.SIZE BODY.PEEK[HEADER])";
+
+fn assert_uid_exists(session: &mut ImapSession, mailbox: &str, uid: u32) -> Result<(), MailError> {
+    let fetch_result = session.uid_fetch(uid.to_string(), "(UID)")?;
+    if fetch_result.into_iter().next().is_some() {
+        Ok(())
+    } else {
+        Err(MailError::ImapMessageNotFound {
+            mailbox: mailbox.to_string(),
+            uid,
+        })
+    }
+}
+
 pub async fn list_messages(
     config: &AppConfig,
     req: ListMessagesRequest,
@@ -166,7 +178,9 @@ pub async fn list_messages(
 
         session
             .select(&req.mailbox)
-            .map_err(|_| MailError::ImapMailboxNotFound { mailbox: req.mailbox.clone() })?;
+            .map_err(|_| MailError::ImapMailboxNotFound {
+                mailbox: req.mailbox.clone(),
+            })?;
 
         let uids = session.uid_search("ALL")?;
         let mut uids: Vec<u32> = uids.into_iter().collect();
@@ -184,8 +198,7 @@ pub async fn list_messages(
 
         let mut messages = Vec::new();
         for uid in page_uids {
-            let fetch_result = session
-                .uid_fetch(format!("{}", uid), "UID FLAGS RFC822.SIZE BODY.PEEK[HEADER]")?;
+            let fetch_result = session.uid_fetch(uid.to_string(), MESSAGE_SUMMARY_FETCH_ITEMS)?;
 
             if let Some(email) = fetch_result.into_iter().next() {
                 let flags: Vec<&str> = email.flags().iter().map(flag_to_str).collect();
@@ -224,7 +237,12 @@ pub async fn list_messages(
         .to_string())
     })
     .await
-    .map_err(|e| MailError::Io(std::io::Error::new(std::io::ErrorKind::Other, e.to_string())))?
+    .map_err(|e| {
+        MailError::Io(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            e.to_string(),
+        ))
+    })?
 }
 
 fn extract_text(parsed: &ParsedMail) -> Option<String> {
@@ -251,17 +269,16 @@ fn extract_html(parsed: &ParsedMail) -> Option<String> {
     None
 }
 
-pub async fn get_message(
-    config: &AppConfig,
-    req: GetMessageRequest,
-) -> Result<String, MailError> {
+pub async fn get_message(config: &AppConfig, req: GetMessageRequest) -> Result<String, MailError> {
     let config = config.clone();
     tokio::task::spawn_blocking(move || {
         let mut session = connect_imap(&config)?;
 
         session
             .select(&req.mailbox)
-            .map_err(|_| MailError::ImapMailboxNotFound { mailbox: req.mailbox.clone() })?;
+            .map_err(|_| MailError::ImapMailboxNotFound {
+                mailbox: req.mailbox.clone(),
+            })?;
 
         let fetch_query = if req.mark_seen {
             "BODY[]"
@@ -269,15 +286,16 @@ pub async fn get_message(
             "BODY.PEEK[]"
         };
 
-        let fetch_result = session
-            .uid_fetch(format!("{}", req.uid), fetch_query)?;
+        let fetch_result = session.uid_fetch(format!("{}", req.uid), fetch_query)?;
 
-        let email = fetch_result.into_iter().next().ok_or_else(|| {
-            MailError::ImapMessageNotFound {
-                mailbox: req.mailbox.clone(),
-                uid: req.uid,
-            }
-        })?;
+        let email =
+            fetch_result
+                .into_iter()
+                .next()
+                .ok_or_else(|| MailError::ImapMessageNotFound {
+                    mailbox: req.mailbox.clone(),
+                    uid: req.uid,
+                })?;
 
         let body = email
             .body()
@@ -285,8 +303,8 @@ pub async fn get_message(
 
         let headers = parse_email_headers(body);
 
-        let parsed_mail = mailparse::parse_mail(body)
-            .map_err(|e| MailError::MimeParse(e.to_string()))?;
+        let parsed_mail =
+            mailparse::parse_mail(body).map_err(|e| MailError::MimeParse(e.to_string()))?;
 
         let text = extract_text(&parsed_mail);
         let html = extract_html(&parsed_mail);
@@ -339,7 +357,12 @@ pub async fn get_message(
         .to_string())
     })
     .await
-    .map_err(|e| MailError::Io(std::io::Error::new(std::io::ErrorKind::Other, e.to_string())))?
+    .map_err(|e| {
+        MailError::Io(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            e.to_string(),
+        ))
+    })?
 }
 
 pub async fn delete_message(
@@ -352,10 +375,13 @@ pub async fn delete_message(
 
         session
             .select(&req.mailbox)
-            .map_err(|_| MailError::ImapMailboxNotFound { mailbox: req.mailbox.clone() })?;
+            .map_err(|_| MailError::ImapMailboxNotFound {
+                mailbox: req.mailbox.clone(),
+            })?;
 
-        session
-            .uid_store(format!("{}", req.uid), "+FLAGS.SILENT (\\Deleted)")?;
+        assert_uid_exists(&mut session, &req.mailbox, req.uid)?;
+
+        session.uid_store(format!("{}", req.uid), "+FLAGS.SILENT (\\Deleted)")?;
 
         if req.expunge {
             session.expunge()?;
@@ -370,7 +396,12 @@ pub async fn delete_message(
         .to_string())
     })
     .await
-    .map_err(|e| MailError::Io(std::io::Error::new(std::io::ErrorKind::Other, e.to_string())))?
+    .map_err(|e| {
+        MailError::Io(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            e.to_string(),
+        ))
+    })?
 }
 
 pub async fn move_message(
@@ -383,12 +414,14 @@ pub async fn move_message(
 
         session
             .select(&req.from_mailbox)
-            .map_err(|_| MailError::ImapMailboxNotFound { mailbox: req.from_mailbox.clone() })?;
+            .map_err(|_| MailError::ImapMailboxNotFound {
+                mailbox: req.from_mailbox.clone(),
+            })?;
 
-        session
-            .uid_copy(format!("{}", req.uid), &req.to_mailbox)?;
-        session
-            .uid_store(format!("{}", req.uid), "+FLAGS.SILENT (\\Deleted)")?;
+        assert_uid_exists(&mut session, &req.from_mailbox, req.uid)?;
+
+        session.uid_copy(format!("{}", req.uid), &req.to_mailbox)?;
+        session.uid_store(format!("{}", req.uid), "+FLAGS.SILENT (\\Deleted)")?;
         session.expunge()?;
 
         Ok(serde_json::json!({
@@ -401,7 +434,12 @@ pub async fn move_message(
         .to_string())
     })
     .await
-    .map_err(|e| MailError::Io(std::io::Error::new(std::io::ErrorKind::Other, e.to_string())))?
+    .map_err(|e| {
+        MailError::Io(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            e.to_string(),
+        ))
+    })?
 }
 
 pub async fn mark_message(
@@ -414,7 +452,11 @@ pub async fn mark_message(
 
         session
             .select(&req.mailbox)
-            .map_err(|_| MailError::ImapMailboxNotFound { mailbox: req.mailbox.clone() })?;
+            .map_err(|_| MailError::ImapMailboxNotFound {
+                mailbox: req.mailbox.clone(),
+            })?;
+
+        assert_uid_exists(&mut session, &req.mailbox, req.uid)?;
 
         let mut add_flags = Vec::new();
         let mut remove_flags = Vec::new();
@@ -443,20 +485,18 @@ pub async fn mark_message(
 
         if !add_flags.is_empty() {
             let flag_str = add_flags.join(" ");
-            session
-                .uid_store(
-                    format!("{}", req.uid),
-                    &format!("+FLAGS.SILENT ({})", flag_str),
-                )?;
+            session.uid_store(
+                format!("{}", req.uid),
+                &format!("+FLAGS.SILENT ({})", flag_str),
+            )?;
         }
 
         if !remove_flags.is_empty() {
             let flag_str = remove_flags.join(" ");
-            session
-                .uid_store(
-                    format!("{}", req.uid),
-                    &format!("-FLAGS.SILENT ({})", flag_str),
-                )?;
+            session.uid_store(
+                format!("{}", req.uid),
+                &format!("-FLAGS.SILENT ({})", flag_str),
+            )?;
         }
 
         Ok(serde_json::json!({
@@ -472,7 +512,12 @@ pub async fn mark_message(
         .to_string())
     })
     .await
-    .map_err(|e| MailError::Io(std::io::Error::new(std::io::ErrorKind::Other, e.to_string())))?
+    .map_err(|e| {
+        MailError::Io(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            e.to_string(),
+        ))
+    })?
 }
 
 #[cfg(test)]
@@ -487,7 +532,10 @@ mod tests {
         assert_eq!(get_header_value(&headers, "From"), "test@example.com");
         assert_eq!(get_header_value(&headers, "To"), "recipient@example.com");
         assert_eq!(get_header_value(&headers, "Subject"), "Hello World");
-        assert_eq!(get_header_value(&headers, "Message-ID"), "<abc123@test.com>");
+        assert_eq!(
+            get_header_value(&headers, "Message-ID"),
+            "<abc123@test.com>"
+        );
     }
 
     #[test]
@@ -517,41 +565,46 @@ mod tests {
 
     #[test]
     fn test_has_attachment_content_type_multipart_mixed() {
-        let headers = vec![
-            ("Content-Type".to_string(), "multipart/mixed; boundary=\"------=_Part_0\"".to_string()),
-        ];
+        let headers = vec![(
+            "Content-Type".to_string(),
+            "multipart/mixed; boundary=\"------=_Part_0\"".to_string(),
+        )];
         assert!(has_attachment_content_type(&headers));
     }
 
     #[test]
     fn test_has_attachment_content_type_name_param() {
-        let headers = vec![
-            ("Content-Type".to_string(), "application/pdf; name=\"report.pdf\"".to_string()),
-        ];
+        let headers = vec![(
+            "Content-Type".to_string(),
+            "application/pdf; name=\"report.pdf\"".to_string(),
+        )];
         assert!(has_attachment_content_type(&headers));
     }
 
     #[test]
     fn test_has_attachment_content_type_no_attachment() {
-        let headers = vec![
-            ("Content-Type".to_string(), "text/plain; charset=utf-8".to_string()),
-        ];
+        let headers = vec![(
+            "Content-Type".to_string(),
+            "text/plain; charset=utf-8".to_string(),
+        )];
         assert!(!has_attachment_content_type(&headers));
     }
 
     #[test]
     fn test_has_attachment_content_type_filename_param() {
-        let headers = vec![
-            ("Content-Type".to_string(), "image/png; filename=chart.png".to_string()),
-        ];
+        let headers = vec![(
+            "Content-Type".to_string(),
+            "image/png; filename=chart.png".to_string(),
+        )];
         assert!(has_attachment_content_type(&headers));
     }
 
     #[test]
     fn test_has_attachment_content_type_case_insensitive_key() {
-        let headers = vec![
-            ("content-type".to_string(), "application/pdf; name=report.pdf".to_string()),
-        ];
+        let headers = vec![(
+            "content-type".to_string(),
+            "application/pdf; name=report.pdf".to_string(),
+        )];
         assert!(has_attachment_content_type(&headers));
     }
 
