@@ -93,6 +93,16 @@ fn tool_error(e: &crate::error::MailError) -> McpError {
     )
 }
 
+fn validate_uid(uid: u32) -> Result<(), McpError> {
+    if uid == 0 {
+        return Err(McpError::invalid_params(
+            "UID must be greater than 0",
+            None,
+        ));
+    }
+    Ok(())
+}
+
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct SendEmailParams {
     #[schemars(description = "List of recipient email addresses (at least one required)")]
@@ -264,6 +274,7 @@ impl QqMailServer {
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<GetMessageParams>,
     ) -> Result<CallToolResult, McpError> {
+        validate_uid(params.uid)?;
         let req = mail::imap::GetMessageRequest {
             mailbox: params.mailbox.unwrap_or_else(|| "INBOX".into()),
             uid: params.uid,
@@ -281,6 +292,7 @@ impl QqMailServer {
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<DeleteMessageParams>,
     ) -> Result<CallToolResult, McpError> {
+        validate_uid(params.uid)?;
         let req = mail::imap::DeleteMessageRequest {
             mailbox: params.mailbox.unwrap_or_else(|| "INBOX".into()),
             uid: params.uid,
@@ -298,6 +310,7 @@ impl QqMailServer {
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<MoveMessageParams>,
     ) -> Result<CallToolResult, McpError> {
+        validate_uid(params.uid)?;
         let req = mail::imap::MoveMessageRequest {
             from_mailbox: params.from_mailbox.unwrap_or_else(|| "INBOX".into()),
             to_mailbox: params.to_mailbox,
@@ -321,6 +334,7 @@ impl QqMailServer {
                 None,
             ));
         }
+        validate_uid(params.uid)?;
 
         let req = mail::imap::MarkMessageRequest {
             mailbox: params.mailbox.unwrap_or_else(|| "INBOX".into()),
@@ -354,5 +368,32 @@ impl ServerHandler for QqMailServer {
                 "QQ Mail MCP server. Tools: send_email (real send), list_mailboxes, list_messages, get_message, delete_message, move_message, mark_message. All operations use a single QQ account configured via .env.".to_string(),
             ),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_validate_uid_zero_rejected() {
+        assert!(validate_uid(0).is_err());
+    }
+
+    #[test]
+    fn test_validate_uid_one_accepted() {
+        assert!(validate_uid(1).is_ok());
+    }
+
+    #[test]
+    fn test_validate_uid_large_accepted() {
+        assert!(validate_uid(999999).is_ok());
+    }
+
+    #[test]
+    fn test_validate_uid_zero_returns_invalid_params() {
+        let err = validate_uid(0).unwrap_err();
+        let json = serde_json::to_string(&err).unwrap();
+        assert!(json.contains("invalid params") || json.contains("-32602"));
     }
 }
