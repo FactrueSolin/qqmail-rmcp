@@ -16,9 +16,73 @@ pub struct QqMailServer {
     pub tool_router: ToolRouter<QqMailServer>,
 }
 
-fn tool_error(message: String, retryable: bool) -> McpError {
+fn sanitize_message(message: &str) -> String {
+    let sanitized = message
+        .replace(&std::env::var("QQMAIL_AUTH_CODE").unwrap_or_default(), "***")
+        .replace(&std::env::var("MCP_ACCESS_TOKEN").unwrap_or_default(), "***");
+    if sanitized.len() > 200 {
+        format!("{}...", &sanitized[..200])
+    } else {
+        sanitized
+    }
+}
+
+fn tool_error(e: &crate::error::MailError) -> McpError {
+    let (code, message, retryable) = match e {
+        crate::error::MailError::Smtp(_) => (
+            "smtp_error",
+            "SMTP operation failed".to_string(),
+            true,
+        ),
+        crate::error::MailError::Lettre(_) => (
+            "smtp_error",
+            "Failed to construct email".to_string(),
+            false,
+        ),
+        crate::error::MailError::Imap(_) => (
+            "imap_error",
+            "IMAP operation failed".to_string(),
+            true,
+        ),
+        crate::error::MailError::ImapLogin(msg) => (
+            "imap_auth_failed",
+            format!("IMAP authentication failed: {}", sanitize_message(msg)),
+            false,
+        ),
+        crate::error::MailError::ImapMailboxNotFound { mailbox } => (
+            "imap_mailbox_not_found",
+            format!("Mailbox not found: {}", sanitize_message(mailbox)),
+            false,
+        ),
+        crate::error::MailError::ImapMessageNotFound { mailbox, uid } => (
+            "imap_uid_not_found",
+            format!("Message uid={} not found in {}", uid, sanitize_message(mailbox)),
+            false,
+        ),
+        crate::error::MailError::MimeParse(msg) => (
+            "mime_parse_failed",
+            format!("Failed to parse email: {}", sanitize_message(msg)),
+            false,
+        ),
+        crate::error::MailError::AddressParse(msg) => (
+            "invalid_arguments",
+            format!("Invalid email address: {}", sanitize_message(msg)),
+            false,
+        ),
+        crate::error::MailError::Tls(_) => (
+            "tls_error",
+            "TLS connection failed".to_string(),
+            true,
+        ),
+        crate::error::MailError::Io(msg) => (
+            "io_error",
+            format!("IO error: {}", sanitize_message(&msg.to_string())),
+            true,
+        ),
+    };
+
     let data = serde_json::json!({
-        "code": if retryable { "retryable_error" } else { "non_retryable_error" },
+        "code": code,
         "message": message,
         "retryable": retryable,
     });
@@ -117,13 +181,14 @@ impl QqMailServer {
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<SendEmailParams>,
     ) -> Result<CallToolResult, McpError> {
-        if params.to.is_empty() {
+        let to: Vec<String> = params.to.iter().map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect();
+        if to.is_empty() {
             return Err(McpError::invalid_params(
                 "At least one recipient is required",
                 None,
             ));
         }
-        if params.subject.is_empty() {
+        if params.subject.trim().is_empty() {
             return Err(McpError::invalid_params("Subject is required", None));
         }
         if params.text.is_none() && params.html.is_none() {
@@ -135,10 +200,10 @@ impl QqMailServer {
 
         let mailer = mail::smtp::build_mailer(&self.config);
         let req = mail::smtp::SendEmailRequest {
-            to: params.to,
+            to,
             cc: params.cc,
             bcc: params.bcc,
-            subject: params.subject,
+            subject: params.subject.trim().to_string(),
             text: params.text,
             html: params.html,
         };
@@ -153,7 +218,7 @@ impl QqMailServer {
                     serde_json::to_string_pretty(&result).unwrap(),
                 )]))
             }
-            Err(e) => Err(tool_error(e.to_string(), e.is_retryable())),
+            Err(e) => Err(tool_error(&e)),
         }
     }
 
@@ -164,7 +229,7 @@ impl QqMailServer {
     ) -> Result<CallToolResult, McpError> {
         match mail::imap::list_mailboxes(&self.config).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(e.to_string(), e.is_retryable())),
+            Err(e) => Err(tool_error(&e)),
         }
     }
 
@@ -173,16 +238,24 @@ impl QqMailServer {
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<ListMessagesParams>,
     ) -> Result<CallToolResult, McpError> {
+        let order = params.order.unwrap_or_else(|| "desc".into());
+        if order != "desc" && order != "asc" {
+            return Err(McpError::invalid_params(
+                "order must be 'desc' or 'asc'",
+                None,
+            ));
+        }
+
         let req = mail::imap::ListMessagesRequest {
             mailbox: params.mailbox.unwrap_or_else(|| "INBOX".into()),
             limit: params.limit.unwrap_or(20).min(100),
             offset: params.offset,
-            order: params.order.unwrap_or_else(|| "desc".into()),
+            order,
         };
 
         match mail::imap::list_messages(&self.config, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(e.to_string(), e.is_retryable())),
+            Err(e) => Err(tool_error(&e)),
         }
     }
 
@@ -199,7 +272,7 @@ impl QqMailServer {
 
         match mail::imap::get_message(&self.config, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(e.to_string(), e.is_retryable())),
+            Err(e) => Err(tool_error(&e)),
         }
     }
 
@@ -216,7 +289,7 @@ impl QqMailServer {
 
         match mail::imap::delete_message(&self.config, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(e.to_string(), e.is_retryable())),
+            Err(e) => Err(tool_error(&e)),
         }
     }
 
@@ -233,7 +306,7 @@ impl QqMailServer {
 
         match mail::imap::move_message(&self.config, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(e.to_string(), e.is_retryable())),
+            Err(e) => Err(tool_error(&e)),
         }
     }
 
@@ -259,7 +332,7 @@ impl QqMailServer {
 
         match mail::imap::mark_message(&self.config, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(e.to_string(), e.is_retryable())),
+            Err(e) => Err(tool_error(&e)),
         }
     }
 }

@@ -36,7 +36,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing::info!("Starting qqmail-rmcp server");
     tracing::info!("Listening on {}", bind_addr);
     tracing::info!("MCP route: /mcp");
-    tracing::info!("QQ account: {}", &config.qqmail_address);
+    let email_display = if config.qqmail_address.len() > 6 {
+        format!("{}***@{}", &config.qqmail_address[..3], config.qqmail_address.split('@').last().unwrap_or("unknown"))
+    } else {
+        "***".to_string()
+    };
+    tracing::info!("QQ account: {}", email_display);
 
     let config = Arc::new(config);
 

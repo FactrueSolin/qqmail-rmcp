@@ -14,12 +14,19 @@ pub struct AppConfig {
 
 impl AppConfig {
     pub fn from_env() -> Result<Self, String> {
+        #[cfg(not(test))]
         dotenvy::dotenv().ok();
 
         let qqmail_address =
             std::env::var("QQMAIL_ADDRESS").map_err(|_| "QQMAIL_ADDRESS is required")?;
+        if qqmail_address.is_empty() {
+            return Err("QQMAIL_ADDRESS must not be empty".into());
+        }
         let qqmail_auth_code =
             std::env::var("QQMAIL_AUTH_CODE").map_err(|_| "QQMAIL_AUTH_CODE is required")?;
+        if qqmail_auth_code.is_empty() {
+            return Err("QQMAIL_AUTH_CODE must not be empty".into());
+        }
         let smtp_host = std::env::var("QQMAIL_SMTP_HOST").unwrap_or_else(|_| "smtp.qq.com".into());
         let smtp_port: u16 = std::env::var("QQMAIL_SMTP_PORT")
             .unwrap_or_else(|_| "465".into())
@@ -51,5 +58,105 @@ impl AppConfig {
             mcp_bind,
             mcp_access_token,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn clear_env_keys() {
+        for key in &[
+            "QQMAIL_ADDRESS",
+            "QQMAIL_AUTH_CODE",
+            "QQMAIL_SMTP_HOST",
+            "QQMAIL_SMTP_PORT",
+            "QQMAIL_IMAP_HOST",
+            "QQMAIL_IMAP_PORT",
+            "MCP_HTTP_BIND",
+            "MCP_ACCESS_TOKEN",
+        ] {
+            // SAFETY: test-only, single-threaded test context
+            unsafe { std::env::remove_var(key) };
+        }
+    }
+
+    #[test]
+    fn test_config_missing_qqmail_address() {
+        clear_env_keys();
+        // SAFETY: test-only
+        unsafe {
+            std::env::set_var("QQMAIL_AUTH_CODE", "test-code");
+            std::env::set_var("MCP_ACCESS_TOKEN", "test-token");
+        }
+        let result = AppConfig::from_env();
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("QQMAIL_ADDRESS"));
+        clear_env_keys();
+    }
+
+    #[test]
+    fn test_config_empty_qqmail_address() {
+        clear_env_keys();
+        // SAFETY: test-only
+        unsafe {
+            std::env::set_var("QQMAIL_ADDRESS", "");
+            std::env::set_var("QQMAIL_AUTH_CODE", "test-code");
+            std::env::set_var("MCP_ACCESS_TOKEN", "test-token");
+        }
+        let result = AppConfig::from_env();
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("must not be empty"));
+        clear_env_keys();
+    }
+
+    #[test]
+    fn test_config_empty_auth_code() {
+        clear_env_keys();
+        // SAFETY: test-only
+        unsafe {
+            std::env::set_var("QQMAIL_ADDRESS", "test@qq.com");
+            std::env::set_var("QQMAIL_AUTH_CODE", "");
+            std::env::set_var("MCP_ACCESS_TOKEN", "test-token");
+        }
+        let result = AppConfig::from_env();
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("QQMAIL_AUTH_CODE"));
+        clear_env_keys();
+    }
+
+    #[test]
+    fn test_config_empty_access_token() {
+        clear_env_keys();
+        // SAFETY: test-only
+        unsafe {
+            std::env::set_var("QQMAIL_ADDRESS", "test@qq.com");
+            std::env::set_var("QQMAIL_AUTH_CODE", "test-code");
+            std::env::set_var("MCP_ACCESS_TOKEN", "");
+        }
+        let result = AppConfig::from_env();
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("MCP_ACCESS_TOKEN"));
+        clear_env_keys();
+    }
+
+    #[test]
+    fn test_config_valid_minimal() {
+        clear_env_keys();
+        // SAFETY: test-only
+        unsafe {
+            std::env::set_var("QQMAIL_ADDRESS", "test@qq.com");
+            std::env::set_var("QQMAIL_AUTH_CODE", "test-code");
+            std::env::set_var("MCP_ACCESS_TOKEN", "test-token");
+        }
+        let result = AppConfig::from_env();
+        assert!(result.is_ok());
+        let config = result.unwrap();
+        assert_eq!(config.qqmail_address, "test@qq.com");
+        assert_eq!(config.smtp_host, "smtp.qq.com");
+        assert_eq!(config.smtp_port, 465);
+        assert_eq!(config.imap_host, "imap.qq.com");
+        assert_eq!(config.imap_port, 993);
+        clear_env_keys();
     }
 }

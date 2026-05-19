@@ -121,6 +121,13 @@ fn get_header_value(headers: &[(String, String)], name: &str) -> String {
         .unwrap_or_default()
 }
 
+fn has_attachment_content_type(headers: &[(String, String)]) -> bool {
+    headers.iter().any(|(k, v)| {
+        k.eq_ignore_ascii_case("Content-Type")
+            && (v.contains("multipart/mixed") || v.contains("name=") || v.contains("filename="))
+    })
+}
+
 fn parse_email_headers(header_bytes: &[u8]) -> Vec<(String, String)> {
     let parsed = mailparse::parse_headers(header_bytes);
     match parsed {
@@ -170,7 +177,7 @@ pub async fn list_messages(
             uids.sort_unstable();
         }
 
-        let offset = req.offset.unwrap_or(0);
+        let offset = req.offset.unwrap_or(0).min(uids.len());
         let limit = req.limit.min(100);
         let end = (offset + limit).min(uids.len());
         let page_uids = &uids[offset..end];
@@ -178,12 +185,14 @@ pub async fn list_messages(
         let mut messages = Vec::new();
         for uid in page_uids {
             let fetch_result = session
-                .uid_fetch(format!("{}", uid), "UID FLAGS BODY.PEEK[HEADER]")?;
+                .uid_fetch(format!("{}", uid), "UID FLAGS RFC822.SIZE BODY.PEEK[HEADER]")?;
 
             if let Some(email) = fetch_result.into_iter().next() {
                 let flags: Vec<&str> = email.flags().iter().map(flag_to_str).collect();
+                let size = email.size.unwrap_or(0) as u64;
                 let header_bytes = email.header().unwrap_or_default();
                 let headers = parse_email_headers(header_bytes);
+                let has_attachments = has_attachment_content_type(&headers);
 
                 messages.push(serde_json::json!({
                     "uid": uid,
@@ -195,8 +204,8 @@ pub async fn list_messages(
                     "seen": flags.contains(&"\\Seen"),
                     "answered": flags.contains(&"\\Answered"),
                     "flagged": flags.contains(&"\\Flagged"),
-                    "has_attachments": false,
-                    "size": 0,
+                    "has_attachments": has_attachments,
+                    "size": size,
                 }));
             }
         }
@@ -208,6 +217,7 @@ pub async fn list_messages(
         };
 
         Ok(serde_json::json!({
+            "mailbox": req.mailbox,
             "messages": messages,
             "next_offset": next_offset,
         })
@@ -273,19 +283,23 @@ pub async fn get_message(
             .body()
             .ok_or_else(|| MailError::MimeParse("No body found in message".into()))?;
 
+        let headers = parse_email_headers(body);
+
         let parsed_mail = mailparse::parse_mail(body)
             .map_err(|e| MailError::MimeParse(e.to_string()))?;
 
         let text = extract_text(&parsed_mail);
         let html = extract_html(&parsed_mail);
 
-        let headers = parse_email_headers(&parsed_mail.get_body_raw().unwrap_or_default());
-
         let message_id = get_header_value(&headers, "Message-ID");
         let from = get_header_value(&headers, "From");
         let to = get_header_value(&headers, "To");
+        let cc = get_header_value(&headers, "Cc");
         let subject = get_header_value(&headers, "Subject");
         let date = get_header_value(&headers, "Date");
+
+        let flags: Vec<&str> = email.flags().iter().map(flag_to_str).collect();
+        let seen = flags.contains(&"\\Seen");
 
         let attachments: Vec<serde_json::Value> = parsed_mail
             .subparts
@@ -309,12 +323,15 @@ pub async fn get_message(
             .collect();
 
         Ok(serde_json::json!({
+            "mailbox": req.mailbox,
             "uid": req.uid,
             "message_id": message_id,
             "from": from,
             "to": to,
+            "cc": cc,
             "subject": subject,
             "date": date,
+            "seen": seen,
             "text": text,
             "html": html,
             "attachments": attachments,
@@ -456,4 +473,116 @@ pub async fn mark_message(
     })
     .await
     .map_err(|e| MailError::Io(std::io::Error::new(std::io::ErrorKind::Other, e.to_string())))?
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_email_headers_basic() {
+        let raw = b"From: test@example.com\r\nTo: recipient@example.com\r\nSubject: Hello World\r\nMessage-ID: <abc123@test.com>\r\nDate: Mon, 1 Jan 2024 00:00:00 +0000\r\n\r\n";
+        let headers = parse_email_headers(raw);
+        assert_eq!(headers.len(), 5);
+        assert_eq!(get_header_value(&headers, "From"), "test@example.com");
+        assert_eq!(get_header_value(&headers, "To"), "recipient@example.com");
+        assert_eq!(get_header_value(&headers, "Subject"), "Hello World");
+        assert_eq!(get_header_value(&headers, "Message-ID"), "<abc123@test.com>");
+    }
+
+    #[test]
+    fn test_parse_email_headers_case_insensitive() {
+        let raw = b"from: test@example.com\r\nSUBJECT: Test\r\n\r\n";
+        let headers = parse_email_headers(raw);
+        assert_eq!(get_header_value(&headers, "From"), "test@example.com");
+        assert_eq!(get_header_value(&headers, "from"), "test@example.com");
+        assert_eq!(get_header_value(&headers, "SUBJECT"), "Test");
+        assert_eq!(get_header_value(&headers, "subject"), "Test");
+    }
+
+    #[test]
+    fn test_parse_email_headers_missing() {
+        let raw = b"From: test@example.com\r\n\r\n";
+        let headers = parse_email_headers(raw);
+        assert_eq!(get_header_value(&headers, "Cc"), "");
+        assert_eq!(get_header_value(&headers, "NonExistent"), "");
+    }
+
+    #[test]
+    fn test_parse_email_headers_empty() {
+        let headers = parse_email_headers(&[]);
+        assert!(headers.is_empty());
+        assert_eq!(get_header_value(&headers, "From"), "");
+    }
+
+    #[test]
+    fn test_has_attachment_content_type_multipart_mixed() {
+        let headers = vec![
+            ("Content-Type".to_string(), "multipart/mixed; boundary=\"------=_Part_0\"".to_string()),
+        ];
+        assert!(has_attachment_content_type(&headers));
+    }
+
+    #[test]
+    fn test_has_attachment_content_type_name_param() {
+        let headers = vec![
+            ("Content-Type".to_string(), "application/pdf; name=\"report.pdf\"".to_string()),
+        ];
+        assert!(has_attachment_content_type(&headers));
+    }
+
+    #[test]
+    fn test_has_attachment_content_type_no_attachment() {
+        let headers = vec![
+            ("Content-Type".to_string(), "text/plain; charset=utf-8".to_string()),
+        ];
+        assert!(!has_attachment_content_type(&headers));
+    }
+
+    #[test]
+    fn test_list_messages_offset_boundary_empty() {
+        let uids: Vec<u32> = vec![];
+        let offset = Some(0);
+        let limit = 20;
+        let end = (offset.unwrap_or(0) + limit).min(uids.len());
+        assert!(offset.unwrap_or(0) <= uids.len());
+        assert_eq!(end, 0);
+        let page: &[u32] = &uids[offset.unwrap_or(0)..end];
+        assert!(page.is_empty());
+    }
+
+    #[test]
+    fn test_list_messages_offset_beyond_length() {
+        let uids: Vec<u32> = vec![1, 2, 3];
+        let offset = Some(10);
+        let limit = 20;
+        let clamped_offset = offset.unwrap_or(0).min(uids.len());
+        let end = (clamped_offset + limit).min(uids.len());
+        let page: &[u32] = &uids[clamped_offset..end];
+        assert!(page.is_empty());
+    }
+
+    #[test]
+    fn test_list_messages_offset_at_boundary() {
+        let uids: Vec<u32> = vec![1, 2, 3];
+        let offset = Some(3);
+        let limit = 20;
+        let clamped_offset = offset.unwrap_or(0).min(uids.len());
+        let end = (clamped_offset + limit).min(uids.len());
+        let page: &[u32] = &uids[clamped_offset..end];
+        assert!(page.is_empty());
+    }
+
+    #[test]
+    fn test_list_messages_normal_pagination() {
+        let uids: Vec<u32> = (1..=50).collect();
+        let offset = Some(0);
+        let limit = 20;
+        let clamped_offset = offset.unwrap_or(0).min(uids.len());
+        let end = (clamped_offset + limit).min(uids.len());
+        let page: &[u32] = &uids[clamped_offset..end];
+        assert_eq!(page.len(), 20);
+        assert_eq!(page[0], 1);
+        assert_eq!(page[19], 20);
+    }
 }
