@@ -1,4 +1,4 @@
-use crate::config::AppConfig;
+use crate::config::MailAccountConfig;
 use crate::error::MailError;
 use mailparse::ParsedMail;
 use serde::Deserialize;
@@ -70,21 +70,22 @@ pub struct MarkMessageRequest {
     pub answered: Option<bool>,
 }
 
-fn connect_imap(config: &AppConfig) -> Result<ImapSession, MailError> {
+fn connect_imap(account: &MailAccountConfig) -> Result<ImapSession, MailError> {
+    debug_assert_eq!(account.provider, crate::config::MailProvider::Qq);
     let tls = native_tls::TlsConnector::builder().build()?;
-    let addr = format!("{}:{}", config.imap_host, config.imap_port);
-    let session = imap::connect(&addr, &config.imap_host, &tls)
+    let addr = format!("{}:{}", account.imap.host, account.imap.port);
+    let session = imap::connect(&addr, &account.imap.host, &tls)
         .map_err(|e| MailError::ImapLogin(e.to_string()))?;
 
     session
-        .login(&config.qqmail_address, &config.qqmail_auth_code)
+        .login(&account.address, &account.auth_code)
         .map_err(|(e, _)| MailError::ImapLogin(e.to_string()))
 }
 
-pub async fn list_mailboxes(config: &AppConfig) -> Result<String, MailError> {
-    let config = config.clone();
+pub async fn list_mailboxes(account: &MailAccountConfig) -> Result<String, MailError> {
+    let account = account.clone();
     tokio::task::spawn_blocking(move || {
-        let mut session = connect_imap(&config)?;
+        let mut session = connect_imap(&account)?;
 
         let mut mailboxes = Vec::new();
         let list_result = session.list(None, Some("*"))?;
@@ -191,12 +192,12 @@ fn assert_uid_exists(session: &mut ImapSession, mailbox: &str, uid: u32) -> Resu
 }
 
 pub async fn list_messages(
-    config: &AppConfig,
+    account: &MailAccountConfig,
     req: ListMessagesRequest,
 ) -> Result<String, MailError> {
-    let config = config.clone();
+    let account = account.clone();
     tokio::task::spawn_blocking(move || {
-        let mut session = connect_imap(&config)?;
+        let mut session = connect_imap(&account)?;
 
         session
             .select(&req.mailbox)
@@ -291,10 +292,13 @@ fn extract_html(parsed: &ParsedMail) -> Option<String> {
     None
 }
 
-pub async fn get_message(config: &AppConfig, req: GetMessageRequest) -> Result<String, MailError> {
-    let config = config.clone();
+pub async fn get_message(
+    account: &MailAccountConfig,
+    req: GetMessageRequest,
+) -> Result<String, MailError> {
+    let account = account.clone();
     tokio::task::spawn_blocking(move || {
-        let mut session = connect_imap(&config)?;
+        let mut session = connect_imap(&account)?;
 
         session
             .select(&req.mailbox)
@@ -388,12 +392,12 @@ pub async fn get_message(config: &AppConfig, req: GetMessageRequest) -> Result<S
 }
 
 pub async fn delete_message(
-    config: &AppConfig,
+    account: &MailAccountConfig,
     req: DeleteMessageRequest,
 ) -> Result<String, MailError> {
-    let config = config.clone();
+    let account = account.clone();
     tokio::task::spawn_blocking(move || {
-        let mut session = connect_imap(&config)?;
+        let mut session = connect_imap(&account)?;
 
         session
             .select(&req.mailbox)
@@ -427,12 +431,12 @@ pub async fn delete_message(
 }
 
 pub async fn move_message(
-    config: &AppConfig,
+    account: &MailAccountConfig,
     req: MoveMessageRequest,
 ) -> Result<String, MailError> {
-    let config = config.clone();
+    let account = account.clone();
     tokio::task::spawn_blocking(move || {
-        let mut session = connect_imap(&config)?;
+        let mut session = connect_imap(&account)?;
 
         session
             .select(&req.from_mailbox)
@@ -465,12 +469,12 @@ pub async fn move_message(
 }
 
 pub async fn mark_message(
-    config: &AppConfig,
+    account: &MailAccountConfig,
     req: MarkMessageRequest,
 ) -> Result<String, MailError> {
-    let config = config.clone();
+    let account = account.clone();
     tokio::task::spawn_blocking(move || {
-        let mut session = connect_imap(&config)?;
+        let mut session = connect_imap(&account)?;
 
         session
             .select(&req.mailbox)
