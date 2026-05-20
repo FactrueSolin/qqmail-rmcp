@@ -18,6 +18,7 @@ Usage: $0 <command>
 Commands:
   build             Build the release binary with cargo
   deploy            Build, install, write plist, and load the LaunchAgent
+  redeploy          Delete the old service files, then build and deploy again
   start             Load the LaunchAgent if needed, then start the service
   stop              Stop and unload the LaunchAgent
   restart           Restart the LaunchAgent service
@@ -139,6 +140,12 @@ deploy() {
     echo "Logs:   $LOG_DIR"
 }
 
+redeploy() {
+    require_macos
+    delete_service
+    deploy
+}
+
 start() {
     require_macos
     if [[ ! -f "$PLIST_PATH" ]]; then
@@ -214,6 +221,7 @@ shift || true
 case "$command" in
     build) build ;;
     deploy) deploy ;;
+    redeploy) redeploy ;;
     start) start ;;
     stop) stop ;;
     restart) restart ;;

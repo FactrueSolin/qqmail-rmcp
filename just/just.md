@@ -26,6 +26,12 @@ just deploy
 Builds the binary, installs it to `~/.local/share/qqmail-rmcp`, copies `.env` into that install directory when present, writes `~/Library/LaunchAgents/cn.actrue.qqmail-rmcp.plist`, then loads and starts the LaunchAgent.
 
 ```bash
+just redeploy
+```
+
+Stops and unloads the existing LaunchAgent, removes the old plist and install directory, then rebuilds, reinstalls, writes a fresh plist, loads, and starts the service again. Logs are kept under `~/Library/Logs/qqmail-rmcp`.
+
+```bash
 just restart
 ```
 
