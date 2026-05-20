@@ -156,6 +156,28 @@ fn flag_to_str(flag: &imap::types::Flag<'_>) -> &'static str {
 
 const MESSAGE_SUMMARY_FETCH_ITEMS: &str = "(UID FLAGS RFC822.SIZE BODY.PEEK[HEADER])";
 
+fn message_has_flag(email: &imap::types::Fetch, expected: &str) -> bool {
+    email
+        .flags()
+        .iter()
+        .map(flag_to_str)
+        .any(|flag| flag == expected)
+}
+
+fn plan_flag_mutation(
+    desired: Option<bool>,
+    current: bool,
+    flag: &'static str,
+    add_flags: &mut Vec<&'static str>,
+    remove_flags: &mut Vec<&'static str>,
+) {
+    match (desired, current) {
+        (Some(true), false) => add_flags.push(flag),
+        (Some(false), true) => remove_flags.push(flag),
+        _ => {}
+    }
+}
+
 fn assert_uid_exists(session: &mut ImapSession, mailbox: &str, uid: u32) -> Result<(), MailError> {
     let fetch_result = session.uid_fetch(uid.to_string(), "(UID)")?;
     if fetch_result.into_iter().next().is_some() {
@@ -456,32 +478,44 @@ pub async fn mark_message(
                 mailbox: req.mailbox.clone(),
             })?;
 
-        assert_uid_exists(&mut session, &req.mailbox, req.uid)?;
+        let fetch_result = session.uid_fetch(req.uid.to_string(), "(UID FLAGS)")?;
+        let email =
+            fetch_result
+                .into_iter()
+                .next()
+                .ok_or_else(|| MailError::ImapMessageNotFound {
+                    mailbox: req.mailbox.clone(),
+                    uid: req.uid,
+                })?;
+
+        let current_seen = message_has_flag(&email, "\\Seen");
+        let current_flagged = message_has_flag(&email, "\\Flagged");
+        let current_answered = message_has_flag(&email, "\\Answered");
 
         let mut add_flags = Vec::new();
         let mut remove_flags = Vec::new();
 
-        if let Some(seen) = req.seen {
-            if seen {
-                add_flags.push("\\Seen");
-            } else {
-                remove_flags.push("\\Seen");
-            }
-        }
-        if let Some(flagged) = req.flagged {
-            if flagged {
-                add_flags.push("\\Flagged");
-            } else {
-                remove_flags.push("\\Flagged");
-            }
-        }
-        if let Some(answered) = req.answered {
-            if answered {
-                add_flags.push("\\Answered");
-            } else {
-                remove_flags.push("\\Answered");
-            }
-        }
+        plan_flag_mutation(
+            req.seen,
+            current_seen,
+            "\\Seen",
+            &mut add_flags,
+            &mut remove_flags,
+        );
+        plan_flag_mutation(
+            req.flagged,
+            current_flagged,
+            "\\Flagged",
+            &mut add_flags,
+            &mut remove_flags,
+        );
+        plan_flag_mutation(
+            req.answered,
+            current_answered,
+            "\\Answered",
+            &mut add_flags,
+            &mut remove_flags,
+        );
 
         if !add_flags.is_empty() {
             let flag_str = add_flags.join(" ");
@@ -660,5 +694,67 @@ mod tests {
         assert_eq!(page.len(), 20);
         assert_eq!(page[0], 1);
         assert_eq!(page[19], 20);
+    }
+
+    #[test]
+    fn test_plan_flag_mutation_skips_noop_false_for_absent_flag() {
+        let mut add_flags = Vec::new();
+        let mut remove_flags = Vec::new();
+
+        plan_flag_mutation(
+            Some(false),
+            false,
+            "\\Answered",
+            &mut add_flags,
+            &mut remove_flags,
+        );
+
+        assert!(add_flags.is_empty());
+        assert!(remove_flags.is_empty());
+    }
+
+    #[test]
+    fn test_plan_flag_mutation_adds_only_missing_enabled_flag() {
+        let mut add_flags = Vec::new();
+        let mut remove_flags = Vec::new();
+
+        plan_flag_mutation(
+            Some(true),
+            false,
+            "\\Flagged",
+            &mut add_flags,
+            &mut remove_flags,
+        );
+
+        assert_eq!(add_flags, vec!["\\Flagged"]);
+        assert!(remove_flags.is_empty());
+    }
+
+    #[test]
+    fn test_plan_flag_mutation_removes_only_present_disabled_flag() {
+        let mut add_flags = Vec::new();
+        let mut remove_flags = Vec::new();
+
+        plan_flag_mutation(
+            Some(false),
+            true,
+            "\\Seen",
+            &mut add_flags,
+            &mut remove_flags,
+        );
+
+        assert!(add_flags.is_empty());
+        assert_eq!(remove_flags, vec!["\\Seen"]);
+    }
+
+    #[test]
+    fn test_plan_flag_mutation_skips_omitted_flag() {
+        let mut add_flags = Vec::new();
+        let mut remove_flags = Vec::new();
+
+        plan_flag_mutation(None, true, "\\Seen", &mut add_flags, &mut remove_flags);
+
+        assert!(add_flags.is_empty());
+        assert!(remove_flags.is_empty());
     }
 }
