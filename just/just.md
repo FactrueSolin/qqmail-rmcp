@@ -7,7 +7,7 @@ These recipes build `qqmail-rmcp` and manage it as a macOS user LaunchAgent.
 - macOS with `launchctl`
 - Rust toolchain with `cargo`
 - `just`
-- A configured `.env` file copied from `.env.example`
+- A configured `config/qqmail.yaml` file copied from `config/qqmail.yaml.example`
 
 ## Common commands
 
@@ -23,7 +23,7 @@ Builds the release binary with Cargo.
 just deploy
 ```
 
-Builds the binary, installs it to `~/.local/share/qqmail-rmcp`, copies `.env` into that install directory when present, writes `~/Library/LaunchAgents/cn.actrue.qqmail-rmcp.plist`, then loads and starts the LaunchAgent.
+Builds the binary, installs it to `~/.local/share/qqmail-rmcp`, copies `config/qqmail.yaml` into `~/.local/share/qqmail-rmcp/config/qqmail.yaml` when present, copies `.env` when present for legacy fallback, writes `~/Library/LaunchAgents/cn.actrue.qqmail-rmcp.plist`, then loads and starts the LaunchAgent. When YAML is installed, the plist sets `QQMAIL_CONFIG` to the installed YAML path so the service does not depend on the repository checkout after deployment. When YAML is absent, the plist leaves `QQMAIL_CONFIG` unset so legacy `.env` fallback still works.
 
 ```bash
 just redeploy
@@ -72,13 +72,18 @@ Defaults:
 QQMAIL_RMCP_SERVICE_NAME=cn.actrue.qqmail-rmcp
 QQMAIL_RMCP_INSTALL_DIR=$HOME/.local/share/qqmail-rmcp
 QQMAIL_RMCP_LOG_DIR=$HOME/Library/Logs/qqmail-rmcp
+QQMAIL_RMCP_CONFIG_FILE=<repo>/config/qqmail.yaml
 QQMAIL_RMCP_ENV_FILE=<repo>/.env
 ```
 
-Override these variables before running `just deploy` when a machine needs custom paths or a custom service label.
+Override these variables before running `just deploy` when a machine needs custom paths, a custom service label, or a YAML config stored outside the repository.
 
 Example:
 
 ```bash
 QQMAIL_RMCP_INSTALL_DIR=/opt/qqmail-rmcp just deploy
+```
+
+```bash
+QQMAIL_RMCP_CONFIG_FILE=$HOME/secrets/qqmail.yaml just deploy
 ```

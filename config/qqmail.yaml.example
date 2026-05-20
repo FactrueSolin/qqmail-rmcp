@@ -1,0 +1,27 @@
+mcp:
+  bind: 127.0.0.1:3000
+  access_token: your_secret_access_token_here
+
+mail:
+  accounts:
+    personal:
+      provider: qq
+      address: your_personal@qq.com
+      auth_code: your_qq_authorization_code
+      smtp:
+        host: smtp.qq.com
+        port: 465
+      imap:
+        host: imap.qq.com
+        port: 993
+
+    work:
+      provider: qq
+      address: your_work@qq.com
+      auth_code: your_qq_authorization_code
+      smtp:
+        host: smtp.qq.com
+        port: 465
+      imap:
+        host: imap.qq.com
+        port: 993

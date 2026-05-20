@@ -3,14 +3,14 @@ mod error;
 mod mail;
 mod mcp;
 
+use axum::Router;
 use axum::body::Body;
 use axum::http::{Request, StatusCode};
 use axum::middleware::Next;
 use axum::response::{IntoResponse, Response};
-use axum::Router;
 use mcp::QqMailServer;
-use rmcp::transport::streamable_http_server::session::local::LocalSessionManager;
 use rmcp::transport::streamable_http_server::StreamableHttpService;
+use rmcp::transport::streamable_http_server::session::local::LocalSessionManager;
 use std::sync::Arc;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -36,12 +36,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing::info!("Starting qqmail-rmcp server");
     tracing::info!("Listening on {}", bind_addr);
     tracing::info!("MCP route: /mcp");
-    let email_display = if config.qqmail_address.len() > 6 {
-        format!("{}***@{}", &config.qqmail_address[..3], config.qqmail_address.split('@').last().unwrap_or("unknown"))
-    } else {
-        "***".to_string()
-    };
-    tracing::info!("QQ account: {}", email_display);
+    tracing::info!(
+        "Configured QQ account ids: {}",
+        config
+            .accounts
+            .keys()
+            .cloned()
+            .collect::<Vec<_>>()
+            .join(", ")
+    );
 
     let config = Arc::new(config);
 
@@ -54,12 +57,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Default::default(),
     );
 
-    let mcp_router = Router::new()
-        .nest_service("/mcp", service)
-        .route_layer(axum::middleware::from_fn_with_state(
-            token.clone(),
-            auth_middleware,
-        ));
+    let mcp_router = Router::new().nest_service("/mcp", service).route_layer(
+        axum::middleware::from_fn_with_state(token.clone(), auth_middleware),
+    );
 
     let listener = tokio::net::TcpListener::bind(bind_addr).await?;
 
