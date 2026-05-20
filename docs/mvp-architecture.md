@@ -2,12 +2,12 @@
 
 ## Overview
 
-A local, single-account QQ Mail MCP server exposing email operations via Streamable HTTP. All operations use one QQ account configured via `.env`.
+A local QQ Mail MCP server exposing account-scoped email operations via Streamable HTTP. YAML is the primary configuration source for multiple QQ accounts; `.env` remains a legacy fallback normalized to account `default`.
 
 ## MVP Scope
 
 ### Included
-- Single QQ email account
+- Multiple QQ email accounts keyed by explicit account id
 - Token-protected `/mcp` endpoint
 - Configurable bind address via `.env`
 - Real email sending (no dry-run)
@@ -17,7 +17,6 @@ A local, single-account QQ Mail MCP server exposing email operations via Streama
 - Priority use of `rmcp` crate for Streamable HTTP
 
 ### Excluded (post-MVP)
-- Multi-account support
 - Database / persistent storage
 - Background sync
 - Attachment binary download
@@ -25,7 +24,32 @@ A local, single-account QQ Mail MCP server exposing email operations via Streama
 - Public deployment
 - REST API (MCP only)
 
-## Environment Variables
+## Configuration
+
+Default YAML path: `config/qqmail.yaml`. Override with `QQMAIL_CONFIG=/path/to/qqmail.yaml`.
+
+```yaml
+mcp:
+  bind: 127.0.0.1:3000
+  access_token: your_secret_access_token_here
+
+mail:
+  accounts:
+    personal:
+      provider: qq
+      address: your_personal@qq.com
+      auth_code: your_qq_authorization_code
+      smtp:
+        host: smtp.qq.com
+        port: 465
+      imap:
+        host: imap.qq.com
+        port: 993
+```
+
+All MCP mail tools require `account: string`. There is no default account. If `.env` fallback is used, the only account id is `default`, and clients must still pass `account: "default"`.
+
+## Legacy Environment Variables
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
@@ -48,13 +72,13 @@ A local, single-account QQ Mail MCP server exposing email operations via Streama
 
 | Tool | Description | Side Effect |
 |---|---|---|
-| `send_email` | Send email via SMTP | Real send |
-| `list_mailboxes` | List IMAP mailbox directories | Read-only |
-| `list_messages` | List message summaries with pagination | Read-only |
-| `get_message` | Get full email by UID | Read-only (mark_seen=false default) |
-| `delete_message` | Delete message by UID | Destructive |
-| `move_message` | Move message between mailboxes | State change |
-| `mark_message` | Update message flags (seen/flagged/answered) | State change |
+| `send_email` | Send email via selected account SMTP | Real send |
+| `list_mailboxes` | List selected account IMAP mailbox directories | Read-only |
+| `list_messages` | List selected account message summaries with pagination | Read-only |
+| `get_message` | Get full email by account and UID | Read-only (mark_seen=false default) |
+| `delete_message` | Delete message by account and UID | Destructive |
+| `move_message` | Move message within the selected account | State change |
+| `mark_message` | Update message flags within the selected account | State change |
 
 ## Tech Stack
 
@@ -66,7 +90,7 @@ A local, single-account QQ Mail MCP server exposing email operations via Streama
 | SMTP | `lettre` 0.11 | Async SMTP with rustls TLS |
 | IMAP | `imap` 1.0 | Blocking IMAP via `spawn_blocking` |
 | MIME Parse | `mailparse` 0.16 | Header and body parsing |
-| Config | `dotenvy` 0.15 | `.env` loading |
+| Config | `serde_yaml` + `dotenvy` | YAML loading with `.env` fallback |
 | Error | `thiserror` 2 | Derive macro |
 | Logging | `tracing` + `tracing-subscriber` | Structured logging |
 
@@ -75,7 +99,7 @@ A local, single-account QQ Mail MCP server exposing email operations via Streama
 ```
 src/
   main.rs          # Startup, logging, config, HTTP server with auth
-  config.rs        # .env loading and validation
+  config.rs        # YAML loading, .env fallback, multi-account validation
   error.rs         # Unified error types
   mcp.rs           # MCP server handler, tool definitions, routing
   mail/
@@ -86,7 +110,8 @@ src/
 
 ## Security
 
-- `.env` credentials never logged or exposed
+- YAML / `.env` credentials never logged or exposed
+- Missing, blank, or unknown `account` returns MCP `invalid_params` before SMTP/IMAP network connections
 - MCP token required for all `/mcp` requests
 - Unauthorized requests rejected with 401 before any tool execution
 - Default bind to `127.0.0.1` (localhost only)
@@ -96,7 +121,7 @@ src/
 
 ```bash
 cp .env.example .env
-# Edit .env with your QQ mail credentials
+# Or prefer: cp config/qqmail.yaml.example config/qqmail.yaml
 cargo run
 # Server starts at http://127.0.0.1:3000/mcp
 ```

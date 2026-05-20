@@ -1,4 +1,4 @@
-use crate::config::AppConfig;
+use crate::config::{AppConfig, MailAccountConfig};
 use crate::mail;
 use rmcp::handler::server::router::tool::ToolRouter;
 use rmcp::model::{
@@ -16,21 +16,12 @@ pub struct QqMailServer {
     pub tool_router: ToolRouter<QqMailServer>,
 }
 
-fn sanitize_message(message: &str) -> String {
-    sanitize_message_with_secrets(
-        message,
-        std::env::var("QQMAIL_AUTH_CODE").ok().as_deref(),
-        std::env::var("MCP_ACCESS_TOKEN").ok().as_deref(),
-    )
-}
-
-fn sanitize_message_with_secrets(
+fn sanitize_message_with_secrets<'a>(
     message: &str,
-    qqmail_auth_code: Option<&str>,
-    mcp_access_token: Option<&str>,
+    secrets: impl IntoIterator<Item = &'a str>,
 ) -> String {
     let mut sanitized = message.to_string();
-    for value in [qqmail_auth_code, mcp_access_token].into_iter().flatten() {
+    for value in secrets {
         if !value.is_empty() {
             sanitized = sanitized.replace(value, "***");
         }
@@ -42,56 +33,67 @@ fn sanitize_message_with_secrets(
     }
 }
 
-fn tool_error(e: &crate::error::MailError) -> McpError {
+fn tool_error(config: &AppConfig, e: &crate::error::MailError) -> McpError {
+    let mut secrets: Vec<&str> = config.auth_codes().collect();
+    secrets.push(config.mcp_access_token.as_str());
     let (code, message, retryable) = match e {
-        crate::error::MailError::Smtp(_) => (
-            "smtp_error",
-            "SMTP operation failed".to_string(),
-            true,
-        ),
-        crate::error::MailError::Lettre(_) => (
-            "smtp_error",
-            "Failed to construct email".to_string(),
-            false,
-        ),
-        crate::error::MailError::Imap(_) => (
-            "imap_error",
-            "IMAP operation failed".to_string(),
-            true,
-        ),
+        crate::error::MailError::Smtp(_) => {
+            ("smtp_error", "SMTP operation failed".to_string(), true)
+        }
+        crate::error::MailError::Lettre(_) => {
+            ("smtp_error", "Failed to construct email".to_string(), false)
+        }
+        crate::error::MailError::Imap(_) => {
+            ("imap_error", "IMAP operation failed".to_string(), true)
+        }
         crate::error::MailError::ImapLogin(msg) => (
             "imap_auth_failed",
-            format!("IMAP authentication failed: {}", sanitize_message(msg)),
+            format!(
+                "IMAP authentication failed: {}",
+                sanitize_message_with_secrets(msg, secrets.iter().copied())
+            ),
             false,
         ),
         crate::error::MailError::ImapMailboxNotFound { mailbox } => (
             "imap_mailbox_not_found",
-            format!("Mailbox not found: {}", sanitize_message(mailbox)),
+            format!(
+                "Mailbox not found: {}",
+                sanitize_message_with_secrets(mailbox, secrets.iter().copied())
+            ),
             false,
         ),
         crate::error::MailError::ImapMessageNotFound { mailbox, uid } => (
             "imap_uid_not_found",
-            format!("Message uid={} not found in {}", uid, sanitize_message(mailbox)),
+            format!(
+                "Message uid={} not found in {}",
+                uid,
+                sanitize_message_with_secrets(mailbox, secrets.iter().copied())
+            ),
             false,
         ),
         crate::error::MailError::MimeParse(msg) => (
             "mime_parse_failed",
-            format!("Failed to parse email: {}", sanitize_message(msg)),
+            format!(
+                "Failed to parse email: {}",
+                sanitize_message_with_secrets(msg, secrets.iter().copied())
+            ),
             false,
         ),
         crate::error::MailError::AddressParse(msg) => (
             "invalid_arguments",
-            format!("Invalid email address: {}", sanitize_message(msg)),
+            format!(
+                "Invalid email address: {}",
+                sanitize_message_with_secrets(msg, secrets.iter().copied())
+            ),
             false,
         ),
-        crate::error::MailError::Tls(_) => (
-            "tls_error",
-            "TLS connection failed".to_string(),
-            true,
-        ),
+        crate::error::MailError::Tls(_) => ("tls_error", "TLS connection failed".to_string(), true),
         crate::error::MailError::Io(msg) => (
             "io_error",
-            format!("IO error: {}", sanitize_message(&msg.to_string())),
+            format!(
+                "IO error: {}",
+                sanitize_message_with_secrets(&msg.to_string(), secrets.iter().copied())
+            ),
             true,
         ),
     };
@@ -101,25 +103,35 @@ fn tool_error(e: &crate::error::MailError) -> McpError {
         "message": message,
         "retryable": retryable,
     });
-    McpError::new(
-        ErrorCode::INTERNAL_ERROR,
-        message,
-        Some(data),
-    )
+    McpError::new(ErrorCode::INTERNAL_ERROR, message, Some(data))
 }
 
 fn validate_uid(uid: u32) -> Result<(), McpError> {
     if uid == 0 {
-        return Err(McpError::invalid_params(
-            "UID must be greater than 0",
-            None,
-        ));
+        return Err(McpError::invalid_params("UID must be greater than 0", None));
     }
     Ok(())
 }
 
+fn validate_account_id_param(account: &str) -> Result<(), McpError> {
+    if account.trim().is_empty() {
+        return Err(McpError::invalid_params("account is required", None));
+    }
+    Ok(())
+}
+
+fn resolve_account(config: &AppConfig, account: &str) -> Result<MailAccountConfig, McpError> {
+    validate_account_id_param(account)?;
+    config
+        .account(account.trim())
+        .cloned()
+        .ok_or_else(|| McpError::invalid_params(format!("Unknown account: {}", account), None))
+}
+
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct SendEmailParams {
+    #[schemars(description = "Configured account id. Required; no default account is used.")]
+    pub account: String,
     #[schemars(description = "List of recipient email addresses (at least one required)")]
     pub to: Vec<String>,
     #[schemars(description = "Optional CC recipients")]
@@ -135,7 +147,15 @@ pub struct SendEmailParams {
 }
 
 #[derive(Debug, Deserialize, JsonSchema)]
+pub struct ListMailboxesParams {
+    #[schemars(description = "Configured account id. Required; no default account is used.")]
+    pub account: String,
+}
+
+#[derive(Debug, Deserialize, JsonSchema)]
 pub struct ListMessagesParams {
+    #[schemars(description = "Configured account id. Required; no default account is used.")]
+    pub account: String,
     #[schemars(description = "Mailbox name, default INBOX")]
     pub mailbox: Option<String>,
     #[schemars(description = "Max messages to return (default 20, max 100)")]
@@ -148,6 +168,8 @@ pub struct ListMessagesParams {
 
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct GetMessageParams {
+    #[schemars(description = "Configured account id. Required; no default account is used.")]
+    pub account: String,
     #[schemars(description = "Mailbox name, default INBOX")]
     pub mailbox: Option<String>,
     #[schemars(description = "Message UID")]
@@ -158,6 +180,8 @@ pub struct GetMessageParams {
 
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct DeleteMessageParams {
+    #[schemars(description = "Configured account id. Required; no default account is used.")]
+    pub account: String,
     #[schemars(description = "Mailbox name, default INBOX")]
     pub mailbox: Option<String>,
     #[schemars(description = "Message UID")]
@@ -168,6 +192,8 @@ pub struct DeleteMessageParams {
 
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct MoveMessageParams {
+    #[schemars(description = "Configured account id. Required; no default account is used.")]
+    pub account: String,
     #[schemars(description = "Source mailbox name, default INBOX")]
     pub from_mailbox: Option<String>,
     #[schemars(description = "Destination mailbox name")]
@@ -178,6 +204,8 @@ pub struct MoveMessageParams {
 
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct MarkMessageParams {
+    #[schemars(description = "Configured account id. Required; no default account is used.")]
+    pub account: String,
     #[schemars(description = "Mailbox name, default INBOX")]
     pub mailbox: Option<String>,
     #[schemars(description = "Message UID")]
@@ -206,7 +234,13 @@ impl QqMailServer {
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<SendEmailParams>,
     ) -> Result<CallToolResult, McpError> {
-        let to: Vec<String> = params.to.iter().map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect();
+        let account = resolve_account(&self.config, &params.account)?;
+        let to: Vec<String> = params
+            .to
+            .iter()
+            .map(|s| s.trim().to_string())
+            .filter(|s| !s.is_empty())
+            .collect();
         if to.is_empty() {
             return Err(McpError::invalid_params(
                 "At least one recipient is required",
@@ -223,7 +257,7 @@ impl QqMailServer {
             ));
         }
 
-        let mailer = mail::smtp::build_mailer(&self.config);
+        let mailer = mail::smtp::build_mailer(&account);
         let req = mail::smtp::SendEmailRequest {
             to,
             cc: params.cc,
@@ -233,7 +267,7 @@ impl QqMailServer {
             html: params.html,
         };
 
-        match mail::smtp::send_email(&mailer, &self.config, req).await {
+        match mail::smtp::send_email(&mailer, &account, req).await {
             Ok((accepted, message_id)) => {
                 let result = serde_json::json!({
                     "accepted": accepted,
@@ -243,23 +277,30 @@ impl QqMailServer {
                     serde_json::to_string_pretty(&result).unwrap(),
                 )]))
             }
-            Err(e) => Err(tool_error(&e)),
+            Err(e) => Err(tool_error(&self.config, &e)),
         }
     }
 
     #[tool(description = "List all mailboxes/folders available in the QQ IMAP account.")]
-    async fn list_mailboxes(&self) -> Result<CallToolResult, McpError> {
-        match mail::imap::list_mailboxes(&self.config).await {
+    async fn list_mailboxes(
+        &self,
+        rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<ListMailboxesParams>,
+    ) -> Result<CallToolResult, McpError> {
+        let account = resolve_account(&self.config, &params.account)?;
+        match mail::imap::list_mailboxes(&account).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(&e)),
+            Err(e) => Err(tool_error(&self.config, &e)),
         }
     }
 
-    #[tool(description = "List messages in a mailbox with pagination. Returns message summaries (uid, from, to, subject, date, flags) without body content.")]
+    #[tool(
+        description = "List messages in a mailbox with pagination. Returns message summaries (uid, from, to, subject, date, flags) without body content."
+    )]
     async fn list_messages(
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<ListMessagesParams>,
     ) -> Result<CallToolResult, McpError> {
+        let account = resolve_account(&self.config, &params.account)?;
         let order = params.order.unwrap_or_else(|| "desc".into());
         if order != "desc" && order != "asc" {
             return Err(McpError::invalid_params(
@@ -275,17 +316,20 @@ impl QqMailServer {
             order,
         };
 
-        match mail::imap::list_messages(&self.config, req).await {
+        match mail::imap::list_messages(&account, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(&e)),
+            Err(e) => Err(tool_error(&self.config, &e)),
         }
     }
 
-    #[tool(description = "Get a single email by UID. Returns full text and html body content. Set mark_seen=false (default) to read without marking as seen.")]
+    #[tool(
+        description = "Get a single email by UID. Returns full text and html body content. Set mark_seen=false (default) to read without marking as seen."
+    )]
     async fn get_message(
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<GetMessageParams>,
     ) -> Result<CallToolResult, McpError> {
+        let account = resolve_account(&self.config, &params.account)?;
         validate_uid(params.uid)?;
         let req = mail::imap::GetMessageRequest {
             mailbox: params.mailbox.unwrap_or_else(|| "INBOX".into()),
@@ -293,17 +337,20 @@ impl QqMailServer {
             mark_seen: params.mark_seen.unwrap_or(false),
         };
 
-        match mail::imap::get_message(&self.config, req).await {
+        match mail::imap::get_message(&account, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(&e)),
+            Err(e) => Err(tool_error(&self.config, &e)),
         }
     }
 
-    #[tool(description = "Delete a message by UID. This is a destructive action. Set expunge=false to flag for deletion without immediate removal.")]
+    #[tool(
+        description = "Delete a message by UID. This is a destructive action. Set expunge=false to flag for deletion without immediate removal."
+    )]
     async fn delete_message(
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<DeleteMessageParams>,
     ) -> Result<CallToolResult, McpError> {
+        let account = resolve_account(&self.config, &params.account)?;
         validate_uid(params.uid)?;
         let req = mail::imap::DeleteMessageRequest {
             mailbox: params.mailbox.unwrap_or_else(|| "INBOX".into()),
@@ -311,9 +358,9 @@ impl QqMailServer {
             expunge: params.expunge.unwrap_or(true),
         };
 
-        match mail::imap::delete_message(&self.config, req).await {
+        match mail::imap::delete_message(&account, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(&e)),
+            Err(e) => Err(tool_error(&self.config, &e)),
         }
     }
 
@@ -322,6 +369,7 @@ impl QqMailServer {
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<MoveMessageParams>,
     ) -> Result<CallToolResult, McpError> {
+        let account = resolve_account(&self.config, &params.account)?;
         validate_uid(params.uid)?;
         let req = mail::imap::MoveMessageRequest {
             from_mailbox: params.from_mailbox.unwrap_or_else(|| "INBOX".into()),
@@ -329,17 +377,20 @@ impl QqMailServer {
             uid: params.uid,
         };
 
-        match mail::imap::move_message(&self.config, req).await {
+        match mail::imap::move_message(&account, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(&e)),
+            Err(e) => Err(tool_error(&self.config, &e)),
         }
     }
 
-    #[tool(description = "Update flags on a message by UID. Can set seen, flagged (starred), and answered flags. Pass true/false to set, omit to leave unchanged.")]
+    #[tool(
+        description = "Update flags on a message by UID. Can set seen, flagged (starred), and answered flags. Pass true/false to set, omit to leave unchanged."
+    )]
     async fn mark_message(
         &self,
         rmcp::handler::server::wrapper::Parameters(params): rmcp::handler::server::wrapper::Parameters<MarkMessageParams>,
     ) -> Result<CallToolResult, McpError> {
+        let account = resolve_account(&self.config, &params.account)?;
         if params.seen.is_none() && params.flagged.is_none() && params.answered.is_none() {
             return Err(McpError::invalid_params(
                 "At least one of seen, flagged, or answered must be specified",
@@ -356,9 +407,9 @@ impl QqMailServer {
             answered: params.answered,
         };
 
-        match mail::imap::mark_message(&self.config, req).await {
+        match mail::imap::mark_message(&account, req).await {
             Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
-            Err(e) => Err(tool_error(&e)),
+            Err(e) => Err(tool_error(&self.config, &e)),
         }
     }
 }
@@ -377,7 +428,7 @@ impl ServerHandler for QqMailServer {
                 icons: None,
             },
             instructions: Some(
-                "QQ Mail MCP server. Tools: send_email (real send), list_mailboxes, list_messages, get_message, delete_message, move_message, mark_message. All operations use a single QQ account configured via .env.".to_string(),
+                "QQ Mail MCP server. Tools: send_email (real send), list_mailboxes, list_messages, get_message, delete_message, move_message, mark_message. All mail tools require an explicit account id from the YAML config; legacy .env fallback exposes account \"default\".".to_string(),
             ),
         }
     }
@@ -386,6 +437,34 @@ impl ServerHandler for QqMailServer {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::config::{MailEndpointConfig, MailProvider};
+    use std::collections::BTreeMap;
+
+    fn test_config() -> Arc<AppConfig> {
+        let mut accounts = BTreeMap::new();
+        accounts.insert(
+            "test".to_string(),
+            MailAccountConfig {
+                provider: MailProvider::Qq,
+                address: "test@qq.com".to_string(),
+                auth_code: "auth-code".to_string(),
+                smtp: MailEndpointConfig {
+                    host: "smtp.qq.com".to_string(),
+                    port: 465,
+                },
+                imap: MailEndpointConfig {
+                    host: "imap.qq.com".to_string(),
+                    port: 993,
+                },
+            },
+        );
+
+        Arc::new(AppConfig {
+            mcp_bind: "127.0.0.1:0".parse().unwrap(),
+            mcp_access_token: "token".to_string(),
+            accounts,
+        })
+    }
 
     #[test]
     fn test_validate_uid_zero_rejected() {
@@ -411,15 +490,17 @@ mod tests {
 
     #[test]
     fn test_sanitize_message_preserves_text_when_secrets_unset() {
-        assert_eq!(sanitize_message_with_secrets("imap failed", None, None), "imap failed");
+        assert_eq!(
+            sanitize_message_with_secrets("imap failed", []),
+            "imap failed"
+        );
     }
 
     #[test]
     fn test_sanitize_message_masks_configured_secrets() {
         let sanitized = sanitize_message_with_secrets(
             "secret-code and secret-token leaked",
-            Some("secret-code"),
-            Some("secret-token"),
+            ["secret-code", "secret-token"],
         );
 
         assert_eq!(sanitized, "*** and *** leaked");
@@ -427,24 +508,37 @@ mod tests {
 
     #[test]
     fn test_sanitize_message_truncates_long_messages() {
-        let sanitized = sanitize_message_with_secrets(&"x".repeat(240), None, None);
+        let sanitized = sanitize_message_with_secrets(&"x".repeat(240), []);
         assert_eq!(sanitized.len(), 203);
         assert!(sanitized.ends_with("..."));
     }
 
     #[test]
+    fn test_resolve_account_rejects_blank_account() {
+        let config = test_config();
+        let err = resolve_account(&config, " ").unwrap_err();
+        let json = serde_json::to_string(&err).unwrap();
+        assert!(json.contains("invalid params") || json.contains("-32602"));
+    }
+
+    #[test]
+    fn test_resolve_account_rejects_unknown_account() {
+        let config = test_config();
+        let err = resolve_account(&config, "missing").unwrap_err();
+        let json = serde_json::to_string(&err).unwrap();
+        assert!(json.contains("Unknown account") || json.contains("-32602"));
+    }
+
+    #[test]
+    fn test_resolve_account_accepts_known_account() {
+        let config = test_config();
+        let account = resolve_account(&config, "test").unwrap();
+        assert_eq!(account.address, "test@qq.com");
+    }
+
+    #[test]
     fn test_tool_input_schemas_are_objects() {
-        let config = Arc::new(AppConfig {
-            qqmail_address: "test@qq.com".to_string(),
-            qqmail_auth_code: "auth-code".to_string(),
-            smtp_host: "smtp.qq.com".to_string(),
-            smtp_port: 465,
-            imap_host: "imap.qq.com".to_string(),
-            imap_port: 993,
-            mcp_bind: "127.0.0.1:0".parse().unwrap(),
-            mcp_access_token: "token".to_string(),
-        });
-        let server = QqMailServer::new(config);
+        let server = QqMailServer::new(test_config());
 
         let tools = server.tool_router.list_all();
         assert_eq!(tools.len(), 7);
@@ -455,6 +549,28 @@ mod tests {
                     .and_then(|value| value.as_str()),
                 Some("object"),
                 "tool {} input schema must be an object schema",
+                tool.name
+            );
+        }
+    }
+
+    #[test]
+    fn test_tool_input_schemas_require_account() {
+        let server = QqMailServer::new(test_config());
+
+        let tools = server.tool_router.list_all();
+        assert_eq!(tools.len(), 7);
+        for tool in tools {
+            let required = tool
+                .input_schema
+                .get("required")
+                .and_then(|value| value.as_array())
+                .unwrap_or_else(|| panic!("tool {} must declare required fields", tool.name));
+            assert!(
+                required
+                    .iter()
+                    .any(|field| field.as_str() == Some("account")),
+                "tool {} must require account",
                 tool.name
             );
         }

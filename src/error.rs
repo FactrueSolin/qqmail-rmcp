@@ -32,19 +32,3 @@ pub enum MailError {
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
 }
-
-impl MailError {
-    pub fn is_auth_error(&self) -> bool {
-        matches!(
-            self,
-            MailError::ImapLogin(_) | MailError::ImapMailboxNotFound { .. }
-        )
-    }
-
-    pub fn is_retryable(&self) -> bool {
-        matches!(
-            self,
-            MailError::Smtp(_) | MailError::Tls(_) | MailError::Imap(_) | MailError::Io(_)
-        )
-    }
-}

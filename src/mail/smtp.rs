@@ -1,4 +1,4 @@
-use crate::config::AppConfig;
+use crate::config::MailAccountConfig;
 use crate::error::MailError;
 use lettre::address::AddressError;
 use lettre::message::header::ContentType;
@@ -23,24 +23,25 @@ pub struct SendEmailRequest {
 
 pub type Mailer = AsyncSmtpTransport<Tokio1Executor>;
 
-pub fn build_mailer(config: &AppConfig) -> Mailer {
-    AsyncSmtpTransport::<Tokio1Executor>::relay(&config.smtp_host)
+pub fn build_mailer(account: &MailAccountConfig) -> Mailer {
+    debug_assert_eq!(account.provider, crate::config::MailProvider::Qq);
+    AsyncSmtpTransport::<Tokio1Executor>::relay(&account.smtp.host)
         .unwrap()
         .credentials(Credentials::new(
-            config.qqmail_address.clone(),
-            config.qqmail_auth_code.clone(),
+            account.address.clone(),
+            account.auth_code.clone(),
         ))
-        .port(config.smtp_port)
+        .port(account.smtp.port)
         .build()
 }
 
 pub async fn send_email(
     mailer: &Mailer,
-    config: &AppConfig,
+    account: &MailAccountConfig,
     req: SendEmailRequest,
 ) -> Result<(bool, Option<String>), MailError> {
-    let from: Mailbox = config
-        .qqmail_address
+    let from: Mailbox = account
+        .address
         .parse()
         .map_err(|e: AddressError| MailError::AddressParse(e.to_string()))?;
 
@@ -74,15 +75,17 @@ pub async fn send_email(
             let multipart = MultiPart::alternative()
                 .singlepart(SinglePart::plain(text.clone()))
                 .singlepart(SinglePart::html(html.clone()));
-            builder.multipart(multipart).map_err(|e| MailError::MimeParse(e.to_string()))?
-        }
-        (Some(text), None) => builder.body(text.clone()).map_err(|e| MailError::MimeParse(e.to_string()))?,
-        (None, Some(html)) => {
             builder
-                .header(ContentType::parse("text/html; charset=utf-8").unwrap())
-                .body(html.clone())
+                .multipart(multipart)
                 .map_err(|e| MailError::MimeParse(e.to_string()))?
         }
+        (Some(text), None) => builder
+            .body(text.clone())
+            .map_err(|e| MailError::MimeParse(e.to_string()))?,
+        (None, Some(html)) => builder
+            .header(ContentType::parse("text/html; charset=utf-8").unwrap())
+            .body(html.clone())
+            .map_err(|e| MailError::MimeParse(e.to_string()))?,
         (None, None) => {
             return Err(MailError::MimeParse(
                 "At least one of text or html must be provided".into(),
@@ -92,9 +95,7 @@ pub async fn send_email(
 
     let response = mailer.send(message).await?;
 
-    let message_id = response
-        .first_line()
-        .map(|line| line.to_string());
+    let message_id = response.first_line().map(|line| line.to_string());
 
     Ok((true, message_id))
 }
