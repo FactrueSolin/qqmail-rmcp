@@ -8,6 +8,8 @@ INSTALL_DIR="${QQMAIL_RMCP_INSTALL_DIR:-$HOME/.local/share/qqmail-rmcp}"
 LOG_DIR="${QQMAIL_RMCP_LOG_DIR:-$HOME/Library/Logs/qqmail-rmcp}"
 PLIST_DIR="$HOME/Library/LaunchAgents"
 PLIST_PATH="$PLIST_DIR/$SERVICE_NAME.plist"
+CONFIG_FILE="${QQMAIL_RMCP_CONFIG_FILE:-$ROOT_DIR/config/qqmail.yaml}"
+INSTALLED_CONFIG_FILE="$INSTALL_DIR/config/qqmail.yaml"
 ENV_FILE="${QQMAIL_RMCP_ENV_FILE:-$ROOT_DIR/.env}"
 DOMAIN="gui/$(id -u)/$SERVICE_NAME"
 
@@ -31,6 +33,7 @@ Environment overrides:
   QQMAIL_RMCP_SERVICE_NAME   default: cn.actrue.qqmail-rmcp
   QQMAIL_RMCP_INSTALL_DIR    default: ~/.local/share/qqmail-rmcp
   QQMAIL_RMCP_LOG_DIR        default: ~/Library/Logs/qqmail-rmcp
+  QQMAIL_RMCP_CONFIG_FILE    default: <repo>/config/qqmail.yaml
   QQMAIL_RMCP_ENV_FILE       default: <repo>/.env
 EOF
 }
@@ -57,8 +60,15 @@ build() {
 }
 
 install_files() {
-    mkdir -p "$INSTALL_DIR" "$LOG_DIR" "$PLIST_DIR"
+    mkdir -p "$INSTALL_DIR/config" "$LOG_DIR" "$PLIST_DIR"
     cp "$ROOT_DIR/target/release/$BINARY_NAME" "$INSTALL_DIR/$BINARY_NAME"
+
+    if [[ -f "$CONFIG_FILE" ]]; then
+        cp "$CONFIG_FILE" "$INSTALLED_CONFIG_FILE"
+    else
+        rm -f "$INSTALLED_CONFIG_FILE"
+        echo "No YAML config copied. Create config/qqmail.yaml from config/qqmail.yaml.example or set QQMAIL_RMCP_CONFIG_FILE before deploy." >&2
+    fi
 
     if [[ -f "$ENV_FILE" ]]; then
         cp "$ENV_FILE" "$INSTALL_DIR/.env"
@@ -73,6 +83,12 @@ write_plist() {
     local binary_path="$INSTALL_DIR/$BINARY_NAME"
     local stdout_path="$LOG_DIR/$BINARY_NAME.out.log"
     local stderr_path="$LOG_DIR/$BINARY_NAME.err.log"
+    local config_env_entry=""
+
+    if [[ -f "$CONFIG_FILE" || -f "$INSTALLED_CONFIG_FILE" ]]; then
+        config_env_entry="        <key>QQMAIL_CONFIG</key>
+        <string>$(xml_escape "$INSTALLED_CONFIG_FILE")</string>"
+    fi
 
     cat > "$PLIST_PATH" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -99,6 +115,7 @@ write_plist() {
     <dict>
         <key>RUST_LOG</key>
         <string>$(xml_escape "${RUST_LOG:-info,qqmail_rmcp=debug}")</string>
+$config_env_entry
     </dict>
 </dict>
 </plist>
