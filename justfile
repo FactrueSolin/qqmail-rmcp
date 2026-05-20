@@ -9,6 +9,9 @@ build:
 deploy:
     @bash ./just/qqmail-macos-service.sh deploy
 
+redeploy:
+    @bash ./just/qqmail-macos-service.sh redeploy
+
 start:
     @bash ./just/qqmail-macos-service.sh start
 
