@@ -1,0 +1,4747 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "qqmail-macos-service.sh",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L1",
+      "id": "just_qqmail_macos_service_sh",
+      "community": 4,
+      "norm_label": "qqmail-macos-service.sh"
+    },
+    {
+      "label": "usage()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L16",
+      "id": "just_qqmail_macos_service_usage",
+      "community": 4,
+      "norm_label": "usage()"
+    },
+    {
+      "label": "require_macos()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L41",
+      "id": "just_qqmail_macos_service_require_macos",
+      "community": 4,
+      "norm_label": "require_macos()"
+    },
+    {
+      "label": "xml_escape()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L48",
+      "id": "just_qqmail_macos_service_xml_escape",
+      "community": 4,
+      "norm_label": "xml_escape()"
+    },
+    {
+      "label": "build()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L58",
+      "id": "just_qqmail_macos_service_build",
+      "community": 4,
+      "norm_label": "build()"
+    },
+    {
+      "label": "install_files()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L62",
+      "id": "just_qqmail_macos_service_install_files",
+      "community": 4,
+      "norm_label": "install_files()"
+    },
+    {
+      "label": "write_plist()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L80",
+      "id": "just_qqmail_macos_service_write_plist",
+      "community": 4,
+      "norm_label": "write_plist()"
+    },
+    {
+      "label": "is_loaded()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L125",
+      "id": "just_qqmail_macos_service_is_loaded",
+      "community": 4,
+      "norm_label": "is_loaded()"
+    },
+    {
+      "label": "load_service()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L129",
+      "id": "just_qqmail_macos_service_load_service",
+      "community": 4,
+      "norm_label": "load_service()"
+    },
+    {
+      "label": "unload_service()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L139",
+      "id": "just_qqmail_macos_service_unload_service",
+      "community": 4,
+      "norm_label": "unload_service()"
+    },
+    {
+      "label": "deploy()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L146",
+      "id": "just_qqmail_macos_service_deploy",
+      "community": 4,
+      "norm_label": "deploy()"
+    },
+    {
+      "label": "redeploy()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L160",
+      "id": "just_qqmail_macos_service_redeploy",
+      "community": 4,
+      "norm_label": "redeploy()"
+    },
+    {
+      "label": "start()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L166",
+      "id": "just_qqmail_macos_service_start",
+      "community": 4,
+      "norm_label": "start()"
+    },
+    {
+      "label": "stop()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L176",
+      "id": "just_qqmail_macos_service_stop",
+      "community": 4,
+      "norm_label": "stop()"
+    },
+    {
+      "label": "restart()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L180",
+      "id": "just_qqmail_macos_service_restart",
+      "community": 4,
+      "norm_label": "restart()"
+    },
+    {
+      "label": "delete_service()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L190",
+      "id": "just_qqmail_macos_service_delete_service",
+      "community": 4,
+      "norm_label": "delete_service()"
+    },
+    {
+      "label": "status()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L204",
+      "id": "just_qqmail_macos_service_status",
+      "community": 4,
+      "norm_label": "status()"
+    },
+    {
+      "label": "logs()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L214",
+      "id": "just_qqmail_macos_service_logs",
+      "community": 4,
+      "norm_label": "logs()"
+    },
+    {
+      "label": "plist()",
+      "file_type": "code",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L230",
+      "id": "just_qqmail_macos_service_plist",
+      "community": 4,
+      "norm_label": "plist()"
+    },
+    {
+      "label": "config.rs",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L1",
+      "id": "src_config_rs",
+      "community": 2,
+      "norm_label": "config.rs"
+    },
+    {
+      "label": "AppConfig",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L15",
+      "id": "src_config_appconfig",
+      "community": 2,
+      "norm_label": "appconfig"
+    },
+    {
+      "label": "MailAccountConfig",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L22",
+      "id": "src_config_mailaccountconfig",
+      "community": 2,
+      "norm_label": "mailaccountconfig"
+    },
+    {
+      "label": "MailProvider",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L31",
+      "id": "src_config_mailprovider",
+      "community": 2,
+      "norm_label": "mailprovider"
+    },
+    {
+      "label": "MailEndpointConfig",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L36",
+      "id": "src_config_mailendpointconfig",
+      "community": 2,
+      "norm_label": "mailendpointconfig"
+    },
+    {
+      "label": "RawRootConfig",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L42",
+      "id": "src_config_rawrootconfig",
+      "community": 2,
+      "norm_label": "rawrootconfig"
+    },
+    {
+      "label": "RawMcpConfig",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L48",
+      "id": "src_config_rawmcpconfig",
+      "community": 2,
+      "norm_label": "rawmcpconfig"
+    },
+    {
+      "label": "RawMailConfig",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L54",
+      "id": "src_config_rawmailconfig",
+      "community": 2,
+      "norm_label": "rawmailconfig"
+    },
+    {
+      "label": "RawMailAccountConfig",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L59",
+      "id": "src_config_rawmailaccountconfig",
+      "community": 2,
+      "norm_label": "rawmailaccountconfig"
+    },
+    {
+      "label": "RawMailEndpointConfig",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L68",
+      "id": "src_config_rawmailendpointconfig",
+      "community": 2,
+      "norm_label": "rawmailendpointconfig"
+    },
+    {
+      "label": "parse_bind()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L73",
+      "id": "src_config_parse_bind",
+      "community": 2,
+      "norm_label": "parse_bind()"
+    },
+    {
+      "label": "validate_account_id()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L79",
+      "id": "src_config_validate_account_id",
+      "community": 2,
+      "norm_label": "validate_account_id()"
+    },
+    {
+      "label": "validate_required()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L95",
+      "id": "src_config_validate_required",
+      "community": 2,
+      "norm_label": "validate_required()"
+    },
+    {
+      "label": "normalize_endpoint()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L108",
+      "id": "src_config_normalize_endpoint",
+      "community": 2,
+      "norm_label": "normalize_endpoint()"
+    },
+    {
+      "label": "normalize_yaml_config()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L128",
+      "id": "src_config_normalize_yaml_config",
+      "community": 2,
+      "norm_label": "normalize_yaml_config()"
+    },
+    {
+      "label": ".from_env()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L170",
+      "id": "src_config_appconfig_from_env",
+      "community": 2,
+      "norm_label": ".from_env()"
+    },
+    {
+      "label": ".from_yaml_path()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L185",
+      "id": "src_config_appconfig_from_yaml_path",
+      "community": 2,
+      "norm_label": ".from_yaml_path()"
+    },
+    {
+      "label": ".from_legacy_env()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L194",
+      "id": "src_config_appconfig_from_legacy_env",
+      "community": 2,
+      "norm_label": ".from_legacy_env()"
+    },
+    {
+      "label": ".account()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L249",
+      "id": "src_config_appconfig_account",
+      "community": 2,
+      "norm_label": ".account()"
+    },
+    {
+      "label": ".auth_codes()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L253",
+      "id": "src_config_appconfig_auth_codes",
+      "community": 2,
+      "norm_label": ".auth_codes()"
+    },
+    {
+      "label": "yaml_config()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L264",
+      "id": "src_config_yaml_config",
+      "community": 2,
+      "norm_label": "yaml_config()"
+    },
+    {
+      "label": "parse_yaml()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L288",
+      "id": "src_config_parse_yaml",
+      "community": 2,
+      "norm_label": "parse_yaml()"
+    },
+    {
+      "label": "test_validate_missing_address()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L294",
+      "id": "src_config_test_validate_missing_address",
+      "community": 2,
+      "norm_label": "test_validate_missing_address()"
+    },
+    {
+      "label": "test_validate_empty_address()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L301",
+      "id": "src_config_test_validate_empty_address",
+      "community": 2,
+      "norm_label": "test_validate_empty_address()"
+    },
+    {
+      "label": "test_validate_empty_auth_code()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L308",
+      "id": "src_config_test_validate_empty_auth_code",
+      "community": 2,
+      "norm_label": "test_validate_empty_auth_code()"
+    },
+    {
+      "label": "test_validate_empty_access_token()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L315",
+      "id": "src_config_test_validate_empty_access_token",
+      "community": 2,
+      "norm_label": "test_validate_empty_access_token()"
+    },
+    {
+      "label": "test_validate_all_present()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L322",
+      "id": "src_config_test_validate_all_present",
+      "community": 2,
+      "norm_label": "test_validate_all_present()"
+    },
+    {
+      "label": "test_validate_blank_address_rejected()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L328",
+      "id": "src_config_test_validate_blank_address_rejected",
+      "community": 2,
+      "norm_label": "test_validate_blank_address_rejected()"
+    },
+    {
+      "label": "test_validate_blank_auth_code_rejected()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L335",
+      "id": "src_config_test_validate_blank_auth_code_rejected",
+      "community": 2,
+      "norm_label": "test_validate_blank_auth_code_rejected()"
+    },
+    {
+      "label": "test_validate_blank_access_token_rejected()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L342",
+      "id": "src_config_test_validate_blank_access_token_rejected",
+      "community": 2,
+      "norm_label": "test_validate_blank_access_token_rejected()"
+    },
+    {
+      "label": "test_yaml_allows_multiple_accounts_without_default_account()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L349",
+      "id": "src_config_test_yaml_allows_multiple_accounts_without_default_account",
+      "community": 2,
+      "norm_label": "test_yaml_allows_multiple_accounts_without_default_account()"
+    },
+    {
+      "label": "test_yaml_applies_endpoint_defaults()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L357",
+      "id": "src_config_test_yaml_applies_endpoint_defaults",
+      "community": 2,
+      "norm_label": "test_yaml_applies_endpoint_defaults()"
+    },
+    {
+      "label": "test_yaml_rejects_unsupported_provider()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L367",
+      "id": "src_config_test_yaml_rejects_unsupported_provider",
+      "community": 2,
+      "norm_label": "test_yaml_rejects_unsupported_provider()"
+    },
+    {
+      "label": "test_yaml_rejects_invalid_account_id()",
+      "file_type": "code",
+      "source_file": "src/config.rs",
+      "source_location": "L385",
+      "id": "src_config_test_yaml_rejects_invalid_account_id",
+      "community": 2,
+      "norm_label": "test_yaml_rejects_invalid_account_id()"
+    },
+    {
+      "label": "error.rs",
+      "file_type": "code",
+      "source_file": "src/error.rs",
+      "source_location": "L1",
+      "id": "src_error_rs",
+      "community": 10,
+      "norm_label": "error.rs"
+    },
+    {
+      "label": "MailError",
+      "file_type": "code",
+      "source_file": "src/error.rs",
+      "source_location": "L4",
+      "id": "src_error_mailerror",
+      "community": 10,
+      "norm_label": "mailerror"
+    },
+    {
+      "label": "main.rs",
+      "file_type": "code",
+      "source_file": "src/main.rs",
+      "source_location": "L1",
+      "id": "src_main_rs",
+      "community": 9,
+      "norm_label": "main.rs"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "src/main.rs",
+      "source_location": "L19",
+      "id": "src_main_main",
+      "community": 9,
+      "norm_label": "main()"
+    },
+    {
+      "label": "auth_middleware()",
+      "file_type": "code",
+      "source_file": "src/main.rs",
+      "source_location": "L78",
+      "id": "src_main_auth_middleware",
+      "community": 9,
+      "norm_label": "auth_middleware()"
+    },
+    {
+      "label": "mcp.rs",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L1",
+      "id": "src_mcp_rs",
+      "community": 1,
+      "norm_label": "mcp.rs"
+    },
+    {
+      "label": "QqMailServer",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L14",
+      "id": "src_mcp_qqmailserver",
+      "community": 1,
+      "norm_label": "qqmailserver"
+    },
+    {
+      "label": "sanitize_message_with_secrets()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L19",
+      "id": "src_mcp_sanitize_message_with_secrets",
+      "community": 1,
+      "norm_label": "sanitize_message_with_secrets()"
+    },
+    {
+      "label": "tool_error()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L36",
+      "id": "src_mcp_tool_error",
+      "community": 1,
+      "norm_label": "tool_error()"
+    },
+    {
+      "label": "validate_uid()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L109",
+      "id": "src_mcp_validate_uid",
+      "community": 1,
+      "norm_label": "validate_uid()"
+    },
+    {
+      "label": "validate_account_id_param()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L116",
+      "id": "src_mcp_validate_account_id_param",
+      "community": 1,
+      "norm_label": "validate_account_id_param()"
+    },
+    {
+      "label": "resolve_account()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L123",
+      "id": "src_mcp_resolve_account",
+      "community": 1,
+      "norm_label": "resolve_account()"
+    },
+    {
+      "label": "SendEmailParams",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L132",
+      "id": "src_mcp_sendemailparams",
+      "community": 1,
+      "norm_label": "sendemailparams"
+    },
+    {
+      "label": "ListMailboxesParams",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L150",
+      "id": "src_mcp_listmailboxesparams",
+      "community": 1,
+      "norm_label": "listmailboxesparams"
+    },
+    {
+      "label": "ListMessagesParams",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L156",
+      "id": "src_mcp_listmessagesparams",
+      "community": 1,
+      "norm_label": "listmessagesparams"
+    },
+    {
+      "label": "GetMessageParams",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L170",
+      "id": "src_mcp_getmessageparams",
+      "community": 1,
+      "norm_label": "getmessageparams"
+    },
+    {
+      "label": "DeleteMessageParams",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L182",
+      "id": "src_mcp_deletemessageparams",
+      "community": 1,
+      "norm_label": "deletemessageparams"
+    },
+    {
+      "label": "MoveMessageParams",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L194",
+      "id": "src_mcp_movemessageparams",
+      "community": 1,
+      "norm_label": "movemessageparams"
+    },
+    {
+      "label": "MarkMessageParams",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L206",
+      "id": "src_mcp_markmessageparams",
+      "community": 1,
+      "norm_label": "markmessageparams"
+    },
+    {
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L223",
+      "id": "src_mcp_qqmailserver_new",
+      "community": 1,
+      "norm_label": ".new()"
+    },
+    {
+      "label": ".send_email()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L233",
+      "id": "src_mcp_qqmailserver_send_email",
+      "community": 1,
+      "norm_label": ".send_email()"
+    },
+    {
+      "label": ".list_mailboxes()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L285",
+      "id": "src_mcp_qqmailserver_list_mailboxes",
+      "community": 1,
+      "norm_label": ".list_mailboxes()"
+    },
+    {
+      "label": ".list_messages()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L299",
+      "id": "src_mcp_qqmailserver_list_messages",
+      "community": 1,
+      "norm_label": ".list_messages()"
+    },
+    {
+      "label": ".get_message()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L328",
+      "id": "src_mcp_qqmailserver_get_message",
+      "community": 1,
+      "norm_label": ".get_message()"
+    },
+    {
+      "label": ".delete_message()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L349",
+      "id": "src_mcp_qqmailserver_delete_message",
+      "community": 1,
+      "norm_label": ".delete_message()"
+    },
+    {
+      "label": ".move_message()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L368",
+      "id": "src_mcp_qqmailserver_move_message",
+      "community": 1,
+      "norm_label": ".move_message()"
+    },
+    {
+      "label": ".mark_message()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L389",
+      "id": "src_mcp_qqmailserver_mark_message",
+      "community": 1,
+      "norm_label": ".mark_message()"
+    },
+    {
+      "label": ".get_info()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L419",
+      "id": "src_mcp_qqmailserver_get_info",
+      "community": 1,
+      "norm_label": ".get_info()"
+    },
+    {
+      "label": "test_config()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L443",
+      "id": "src_mcp_test_config",
+      "community": 1,
+      "norm_label": "test_config()"
+    },
+    {
+      "label": "test_validate_uid_zero_rejected()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L470",
+      "id": "src_mcp_test_validate_uid_zero_rejected",
+      "community": 1,
+      "norm_label": "test_validate_uid_zero_rejected()"
+    },
+    {
+      "label": "test_validate_uid_one_accepted()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L475",
+      "id": "src_mcp_test_validate_uid_one_accepted",
+      "community": 1,
+      "norm_label": "test_validate_uid_one_accepted()"
+    },
+    {
+      "label": "test_validate_uid_large_accepted()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L480",
+      "id": "src_mcp_test_validate_uid_large_accepted",
+      "community": 1,
+      "norm_label": "test_validate_uid_large_accepted()"
+    },
+    {
+      "label": "test_validate_uid_zero_returns_invalid_params()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L485",
+      "id": "src_mcp_test_validate_uid_zero_returns_invalid_params",
+      "community": 1,
+      "norm_label": "test_validate_uid_zero_returns_invalid_params()"
+    },
+    {
+      "label": "test_sanitize_message_preserves_text_when_secrets_unset()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L492",
+      "id": "src_mcp_test_sanitize_message_preserves_text_when_secrets_unset",
+      "community": 1,
+      "norm_label": "test_sanitize_message_preserves_text_when_secrets_unset()"
+    },
+    {
+      "label": "test_sanitize_message_masks_configured_secrets()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L500",
+      "id": "src_mcp_test_sanitize_message_masks_configured_secrets",
+      "community": 1,
+      "norm_label": "test_sanitize_message_masks_configured_secrets()"
+    },
+    {
+      "label": "test_sanitize_message_truncates_long_messages()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L510",
+      "id": "src_mcp_test_sanitize_message_truncates_long_messages",
+      "community": 1,
+      "norm_label": "test_sanitize_message_truncates_long_messages()"
+    },
+    {
+      "label": "test_resolve_account_rejects_blank_account()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L517",
+      "id": "src_mcp_test_resolve_account_rejects_blank_account",
+      "community": 1,
+      "norm_label": "test_resolve_account_rejects_blank_account()"
+    },
+    {
+      "label": "test_resolve_account_rejects_unknown_account()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L525",
+      "id": "src_mcp_test_resolve_account_rejects_unknown_account",
+      "community": 1,
+      "norm_label": "test_resolve_account_rejects_unknown_account()"
+    },
+    {
+      "label": "test_resolve_account_accepts_known_account()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L533",
+      "id": "src_mcp_test_resolve_account_accepts_known_account",
+      "community": 1,
+      "norm_label": "test_resolve_account_accepts_known_account()"
+    },
+    {
+      "label": "test_tool_input_schemas_are_objects()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L540",
+      "id": "src_mcp_test_tool_input_schemas_are_objects",
+      "community": 1,
+      "norm_label": "test_tool_input_schemas_are_objects()"
+    },
+    {
+      "label": "test_tool_input_schemas_require_account()",
+      "file_type": "code",
+      "source_file": "src/mcp.rs",
+      "source_location": "L558",
+      "id": "src_mcp_test_tool_input_schemas_require_account",
+      "community": 1,
+      "norm_label": "test_tool_input_schemas_require_account()"
+    },
+    {
+      "label": "imap.rs",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L1",
+      "id": "src_mail_imap_rs",
+      "community": 0,
+      "norm_label": "imap.rs"
+    },
+    {
+      "label": "ListMessagesRequest",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L9",
+      "id": "mail_imap_listmessagesrequest",
+      "community": 0,
+      "norm_label": "listmessagesrequest"
+    },
+    {
+      "label": "default_mailbox()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L20",
+      "id": "mail_imap_default_mailbox",
+      "community": 0,
+      "norm_label": "default_mailbox()"
+    },
+    {
+      "label": "default_limit()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L23",
+      "id": "mail_imap_default_limit",
+      "community": 0,
+      "norm_label": "default_limit()"
+    },
+    {
+      "label": "default_order()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L26",
+      "id": "mail_imap_default_order",
+      "community": 0,
+      "norm_label": "default_order()"
+    },
+    {
+      "label": "GetMessageRequest",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L31",
+      "id": "mail_imap_getmessagerequest",
+      "community": 0,
+      "norm_label": "getmessagerequest"
+    },
+    {
+      "label": "DeleteMessageRequest",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L40",
+      "id": "mail_imap_deletemessagerequest",
+      "community": 0,
+      "norm_label": "deletemessagerequest"
+    },
+    {
+      "label": "default_expunge()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L48",
+      "id": "mail_imap_default_expunge",
+      "community": 0,
+      "norm_label": "default_expunge()"
+    },
+    {
+      "label": "MoveMessageRequest",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L53",
+      "id": "mail_imap_movemessagerequest",
+      "community": 0,
+      "norm_label": "movemessagerequest"
+    },
+    {
+      "label": "MarkMessageRequest",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L61",
+      "id": "mail_imap_markmessagerequest",
+      "community": 0,
+      "norm_label": "markmessagerequest"
+    },
+    {
+      "label": "connect_imap()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L73",
+      "id": "mail_imap_connect_imap",
+      "community": 0,
+      "norm_label": "connect_imap()"
+    },
+    {
+      "label": "list_mailboxes()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L85",
+      "id": "mail_imap_list_mailboxes",
+      "community": 0,
+      "norm_label": "list_mailboxes()"
+    },
+    {
+      "label": "get_header_value()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L115",
+      "id": "mail_imap_get_header_value",
+      "community": 0,
+      "norm_label": "get_header_value()"
+    },
+    {
+      "label": "has_attachment_content_type()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L123",
+      "id": "mail_imap_has_attachment_content_type",
+      "community": 0,
+      "norm_label": "has_attachment_content_type()"
+    },
+    {
+      "label": "parse_email_headers()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L130",
+      "id": "mail_imap_parse_email_headers",
+      "community": 0,
+      "norm_label": "parse_email_headers()"
+    },
+    {
+      "label": "flag_to_str()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L145",
+      "id": "mail_imap_flag_to_str",
+      "community": 0,
+      "norm_label": "flag_to_str()"
+    },
+    {
+      "label": "message_has_flag()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L160",
+      "id": "mail_imap_message_has_flag",
+      "community": 0,
+      "norm_label": "message_has_flag()"
+    },
+    {
+      "label": "plan_flag_mutation()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L168",
+      "id": "mail_imap_plan_flag_mutation",
+      "community": 0,
+      "norm_label": "plan_flag_mutation()"
+    },
+    {
+      "label": "assert_uid_exists()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L182",
+      "id": "mail_imap_assert_uid_exists",
+      "community": 0,
+      "norm_label": "assert_uid_exists()"
+    },
+    {
+      "label": "list_messages()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L194",
+      "id": "mail_imap_list_messages",
+      "community": 0,
+      "norm_label": "list_messages()"
+    },
+    {
+      "label": "extract_text()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L271",
+      "id": "mail_imap_extract_text",
+      "community": 0,
+      "norm_label": "extract_text()"
+    },
+    {
+      "label": "extract_html()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L283",
+      "id": "mail_imap_extract_html",
+      "community": 0,
+      "norm_label": "extract_html()"
+    },
+    {
+      "label": "get_message()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L295",
+      "id": "mail_imap_get_message",
+      "community": 0,
+      "norm_label": "get_message()"
+    },
+    {
+      "label": "delete_message()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L394",
+      "id": "mail_imap_delete_message",
+      "community": 0,
+      "norm_label": "delete_message()"
+    },
+    {
+      "label": "move_message()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L433",
+      "id": "mail_imap_move_message",
+      "community": 0,
+      "norm_label": "move_message()"
+    },
+    {
+      "label": "mark_message()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L471",
+      "id": "mail_imap_mark_message",
+      "community": 0,
+      "norm_label": "mark_message()"
+    },
+    {
+      "label": "test_parse_email_headers_basic()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L566",
+      "id": "mail_imap_test_parse_email_headers_basic",
+      "community": 0,
+      "norm_label": "test_parse_email_headers_basic()"
+    },
+    {
+      "label": "test_parse_email_headers_case_insensitive()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L580",
+      "id": "mail_imap_test_parse_email_headers_case_insensitive",
+      "community": 0,
+      "norm_label": "test_parse_email_headers_case_insensitive()"
+    },
+    {
+      "label": "test_parse_email_headers_missing()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L590",
+      "id": "mail_imap_test_parse_email_headers_missing",
+      "community": 0,
+      "norm_label": "test_parse_email_headers_missing()"
+    },
+    {
+      "label": "test_parse_email_headers_empty()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L598",
+      "id": "mail_imap_test_parse_email_headers_empty",
+      "community": 0,
+      "norm_label": "test_parse_email_headers_empty()"
+    },
+    {
+      "label": "test_has_attachment_content_type_multipart_mixed()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L605",
+      "id": "mail_imap_test_has_attachment_content_type_multipart_mixed",
+      "community": 0,
+      "norm_label": "test_has_attachment_content_type_multipart_mixed()"
+    },
+    {
+      "label": "test_has_attachment_content_type_name_param()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L614",
+      "id": "mail_imap_test_has_attachment_content_type_name_param",
+      "community": 0,
+      "norm_label": "test_has_attachment_content_type_name_param()"
+    },
+    {
+      "label": "test_has_attachment_content_type_no_attachment()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L623",
+      "id": "mail_imap_test_has_attachment_content_type_no_attachment",
+      "community": 0,
+      "norm_label": "test_has_attachment_content_type_no_attachment()"
+    },
+    {
+      "label": "test_has_attachment_content_type_filename_param()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L632",
+      "id": "mail_imap_test_has_attachment_content_type_filename_param",
+      "community": 0,
+      "norm_label": "test_has_attachment_content_type_filename_param()"
+    },
+    {
+      "label": "test_has_attachment_content_type_case_insensitive_key()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L641",
+      "id": "mail_imap_test_has_attachment_content_type_case_insensitive_key",
+      "community": 0,
+      "norm_label": "test_has_attachment_content_type_case_insensitive_key()"
+    },
+    {
+      "label": "test_parse_email_headers_decodes_encoded_subject()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L650",
+      "id": "mail_imap_test_parse_email_headers_decodes_encoded_subject",
+      "community": 0,
+      "norm_label": "test_parse_email_headers_decodes_encoded_subject()"
+    },
+    {
+      "label": "test_list_messages_offset_boundary_empty()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L657",
+      "id": "mail_imap_test_list_messages_offset_boundary_empty",
+      "community": 0,
+      "norm_label": "test_list_messages_offset_boundary_empty()"
+    },
+    {
+      "label": "test_list_messages_offset_beyond_length()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L669",
+      "id": "mail_imap_test_list_messages_offset_beyond_length",
+      "community": 0,
+      "norm_label": "test_list_messages_offset_beyond_length()"
+    },
+    {
+      "label": "test_list_messages_offset_at_boundary()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L680",
+      "id": "mail_imap_test_list_messages_offset_at_boundary",
+      "community": 0,
+      "norm_label": "test_list_messages_offset_at_boundary()"
+    },
+    {
+      "label": "test_list_messages_normal_pagination()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L691",
+      "id": "mail_imap_test_list_messages_normal_pagination",
+      "community": 0,
+      "norm_label": "test_list_messages_normal_pagination()"
+    },
+    {
+      "label": "test_plan_flag_mutation_skips_noop_false_for_absent_flag()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L704",
+      "id": "mail_imap_test_plan_flag_mutation_skips_noop_false_for_absent_flag",
+      "community": 0,
+      "norm_label": "test_plan_flag_mutation_skips_noop_false_for_absent_flag()"
+    },
+    {
+      "label": "test_plan_flag_mutation_adds_only_missing_enabled_flag()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L721",
+      "id": "mail_imap_test_plan_flag_mutation_adds_only_missing_enabled_flag",
+      "community": 0,
+      "norm_label": "test_plan_flag_mutation_adds_only_missing_enabled_flag()"
+    },
+    {
+      "label": "test_plan_flag_mutation_removes_only_present_disabled_flag()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L738",
+      "id": "mail_imap_test_plan_flag_mutation_removes_only_present_disabled_flag",
+      "community": 0,
+      "norm_label": "test_plan_flag_mutation_removes_only_present_disabled_flag()"
+    },
+    {
+      "label": "test_plan_flag_mutation_skips_omitted_flag()",
+      "file_type": "code",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L755",
+      "id": "mail_imap_test_plan_flag_mutation_skips_omitted_flag",
+      "community": 0,
+      "norm_label": "test_plan_flag_mutation_skips_omitted_flag()"
+    },
+    {
+      "label": "mod.rs",
+      "file_type": "code",
+      "source_file": "src/mail/mod.rs",
+      "source_location": "L1",
+      "id": "src_mail_mod_rs",
+      "community": 11,
+      "norm_label": "mod.rs"
+    },
+    {
+      "label": "smtp.rs",
+      "file_type": "code",
+      "source_file": "src/mail/smtp.rs",
+      "source_location": "L1",
+      "id": "src_mail_smtp_rs",
+      "community": 7,
+      "norm_label": "smtp.rs"
+    },
+    {
+      "label": "SendEmailRequest",
+      "file_type": "code",
+      "source_file": "src/mail/smtp.rs",
+      "source_location": "L11",
+      "id": "mail_smtp_sendemailrequest",
+      "community": 7,
+      "norm_label": "sendemailrequest"
+    },
+    {
+      "label": "build_mailer()",
+      "file_type": "code",
+      "source_file": "src/mail/smtp.rs",
+      "source_location": "L26",
+      "id": "mail_smtp_build_mailer",
+      "community": 7,
+      "norm_label": "build_mailer()"
+    },
+    {
+      "label": "send_email()",
+      "file_type": "code",
+      "source_file": "src/mail/smtp.rs",
+      "source_location": "L38",
+      "id": "mail_smtp_send_email",
+      "community": 7,
+      "norm_label": "send_email()"
+    },
+    {
+      "label": "imap_regression.sh",
+      "file_type": "code",
+      "source_file": "tests/imap_regression.sh",
+      "source_location": "L1",
+      "id": "tests_imap_regression_sh",
+      "community": 12,
+      "norm_label": "imap_regression.sh"
+    },
+    {
+      "label": "AGENTS.md",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "id": "agents_md",
+      "community": 8,
+      "norm_label": "agents.md"
+    },
+    {
+      "label": "Project Agent Instructions",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "id": "qqmail_rmcp_agents_project_agent_instructions",
+      "community": 8,
+      "norm_label": "project agent instructions"
+    },
+    {
+      "label": "Graphify",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L3",
+      "id": "qqmail_rmcp_agents_graphify",
+      "community": 8,
+      "norm_label": "graphify"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "readme_md",
+      "community": 6,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "qqmail-rmcp",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "qqmail_rmcp_readme_qqmail_rmcp",
+      "community": 6,
+      "norm_label": "qqmail-rmcp"
+    },
+    {
+      "label": "\u529f\u80fd\u4ecb\u7ecd",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L3",
+      "id": "qqmail_rmcp_readme_\u529f\u80fd\u4ecb\u7ecd",
+      "community": 6,
+      "norm_label": "\u529f\u80fd\u4ecb\u7ecd"
+    },
+    {
+      "label": "mcp\u5de5\u5177\u4ecb\u7ecd",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L9",
+      "id": "qqmail_rmcp_readme_mcp\u5de5\u5177\u4ecb\u7ecd",
+      "community": 6,
+      "norm_label": "mcp\u5de5\u5177\u4ecb\u7ecd"
+    },
+    {
+      "label": "\u4f7f\u7528\u6559\u7a0b",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L21",
+      "id": "qqmail_rmcp_readme_\u4f7f\u7528\u6559\u7a0b",
+      "community": 6,
+      "norm_label": "\u4f7f\u7528\u6559\u7a0b"
+    },
+    {
+      "label": "code:bash (cp config/qqmail.yaml.example config/qqmail.yaml)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L25",
+      "id": "qqmail_rmcp_readme_codeblock_1",
+      "community": 6,
+      "norm_label": "code:bash (cp config/qqmail.yaml.example config/qqmail.yaml)"
+    },
+    {
+      "label": "code:yaml (mcp:)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L31",
+      "id": "qqmail_rmcp_readme_codeblock_2",
+      "community": 6,
+      "norm_label": "code:yaml (mcp:)"
+    },
+    {
+      "label": "code:bash (cargo run)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L48",
+      "id": "qqmail_rmcp_readme_codeblock_3",
+      "community": 6,
+      "norm_label": "code:bash (cargo run)"
+    },
+    {
+      "label": "code:text (http://127.0.0.1:3000/mcp)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L54",
+      "id": "qqmail_rmcp_readme_codeblock_4",
+      "community": 6,
+      "norm_label": "code:text (http://127.0.0.1:3000/mcp)"
+    },
+    {
+      "label": "code:json ({)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L60",
+      "id": "qqmail_rmcp_readme_codeblock_5",
+      "community": 6,
+      "norm_label": "code:json ({)"
+    },
+    {
+      "label": "code:json ({)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L75",
+      "id": "qqmail_rmcp_readme_codeblock_6",
+      "community": 6,
+      "norm_label": "code:json ({)"
+    },
+    {
+      "label": "mvp-architecture.md",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L1",
+      "id": "docs_mvp_architecture_md",
+      "community": 3,
+      "norm_label": "mvp-architecture.md"
+    },
+    {
+      "label": "QQ Mail MCP Server - MVP Architecture",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L1",
+      "id": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "community": 3,
+      "norm_label": "qq mail mcp server - mvp architecture"
+    },
+    {
+      "label": "Overview",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L3",
+      "id": "docs_mvp_architecture_overview",
+      "community": 3,
+      "norm_label": "overview"
+    },
+    {
+      "label": "MVP Scope",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L7",
+      "id": "docs_mvp_architecture_mvp_scope",
+      "community": 3,
+      "norm_label": "mvp scope"
+    },
+    {
+      "label": "Included",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L9",
+      "id": "docs_mvp_architecture_included",
+      "community": 3,
+      "norm_label": "included"
+    },
+    {
+      "label": "Excluded (post-MVP)",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L19",
+      "id": "docs_mvp_architecture_excluded_post_mvp",
+      "community": 3,
+      "norm_label": "excluded (post-mvp)"
+    },
+    {
+      "label": "Configuration",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L27",
+      "id": "docs_mvp_architecture_configuration",
+      "community": 3,
+      "norm_label": "configuration"
+    },
+    {
+      "label": "code:yaml (mcp:)",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L31",
+      "id": "docs_mvp_architecture_codeblock_1",
+      "community": 3,
+      "norm_label": "code:yaml (mcp:)"
+    },
+    {
+      "label": "Legacy Environment Variables",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L52",
+      "id": "docs_mvp_architecture_legacy_environment_variables",
+      "community": 3,
+      "norm_label": "legacy environment variables"
+    },
+    {
+      "label": "MCP Interface",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L65",
+      "id": "docs_mvp_architecture_mcp_interface",
+      "community": 3,
+      "norm_label": "mcp interface"
+    },
+    {
+      "label": "Tools",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L71",
+      "id": "docs_mvp_architecture_tools",
+      "community": 3,
+      "norm_label": "tools"
+    },
+    {
+      "label": "Tech Stack",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L83",
+      "id": "docs_mvp_architecture_tech_stack",
+      "community": 3,
+      "norm_label": "tech stack"
+    },
+    {
+      "label": "Project Structure",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L97",
+      "id": "docs_mvp_architecture_project_structure",
+      "community": 3,
+      "norm_label": "project structure"
+    },
+    {
+      "label": "code:block2 (src/)",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L99",
+      "id": "docs_mvp_architecture_codeblock_2",
+      "community": 3,
+      "norm_label": "code:block2 (src/)"
+    },
+    {
+      "label": "Security",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L111",
+      "id": "docs_mvp_architecture_security",
+      "community": 3,
+      "norm_label": "security"
+    },
+    {
+      "label": "Running",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L120",
+      "id": "docs_mvp_architecture_running",
+      "community": 3,
+      "norm_label": "running"
+    },
+    {
+      "label": "code:bash (cp .env.example .env)",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L122",
+      "id": "docs_mvp_architecture_codeblock_3",
+      "community": 3,
+      "norm_label": "code:bash (cp .env.example .env)"
+    },
+    {
+      "label": "MCP Client Config",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L129",
+      "id": "docs_mvp_architecture_mcp_client_config",
+      "community": 3,
+      "norm_label": "mcp client config"
+    },
+    {
+      "label": "code:json ({)",
+      "file_type": "document",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L131",
+      "id": "docs_mvp_architecture_codeblock_4",
+      "community": 3,
+      "norm_label": "code:json ({)"
+    },
+    {
+      "label": "just.md",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L1",
+      "id": "just_just_md",
+      "community": 5,
+      "norm_label": "just.md"
+    },
+    {
+      "label": "qqmail-rmcp just scripts",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L1",
+      "id": "just_just_qqmail_rmcp_just_scripts",
+      "community": 5,
+      "norm_label": "qqmail-rmcp just scripts"
+    },
+    {
+      "label": "Prerequisites",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L5",
+      "id": "just_just_prerequisites",
+      "community": 5,
+      "norm_label": "prerequisites"
+    },
+    {
+      "label": "Common commands",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L12",
+      "id": "just_just_common_commands",
+      "community": 5,
+      "norm_label": "common commands"
+    },
+    {
+      "label": "code:bash (just build)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L16",
+      "id": "just_just_codeblock_1",
+      "community": 5,
+      "norm_label": "code:bash (just build)"
+    },
+    {
+      "label": "code:bash (just deploy)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L22",
+      "id": "just_just_codeblock_2",
+      "community": 5,
+      "norm_label": "code:bash (just deploy)"
+    },
+    {
+      "label": "code:bash (just redeploy)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L28",
+      "id": "just_just_codeblock_3",
+      "community": 5,
+      "norm_label": "code:bash (just redeploy)"
+    },
+    {
+      "label": "code:bash (just restart)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L34",
+      "id": "just_just_codeblock_4",
+      "community": 5,
+      "norm_label": "code:bash (just restart)"
+    },
+    {
+      "label": "code:bash (just stop)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L40",
+      "id": "just_just_codeblock_5",
+      "community": 5,
+      "norm_label": "code:bash (just stop)"
+    },
+    {
+      "label": "code:bash (just status)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L47",
+      "id": "just_just_codeblock_6",
+      "community": 5,
+      "norm_label": "code:bash (just status)"
+    },
+    {
+      "label": "code:bash (just logs)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L53",
+      "id": "just_just_codeblock_7",
+      "community": 5,
+      "norm_label": "code:bash (just logs)"
+    },
+    {
+      "label": "code:bash (just delete)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L61",
+      "id": "just_just_codeblock_8",
+      "community": 5,
+      "norm_label": "code:bash (just delete)"
+    },
+    {
+      "label": "Paths and overrides",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L67",
+      "id": "just_just_paths_and_overrides",
+      "community": 5,
+      "norm_label": "paths and overrides"
+    },
+    {
+      "label": "code:bash (QQMAIL_RMCP_SERVICE_NAME=cn.actrue.qqmail-rmcp)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L71",
+      "id": "just_just_codeblock_9",
+      "community": 5,
+      "norm_label": "code:bash (qqmail_rmcp_service_name=cn.actrue.qqmail-rmcp)"
+    },
+    {
+      "label": "code:bash (QQMAIL_RMCP_INSTALL_DIR=/opt/qqmail-rmcp just deploy)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L83",
+      "id": "just_just_codeblock_10",
+      "community": 5,
+      "norm_label": "code:bash (qqmail_rmcp_install_dir=/opt/qqmail-rmcp just deploy)"
+    },
+    {
+      "label": "code:bash (QQMAIL_RMCP_CONFIG_FILE=$HOME/secrets/qqmail.yaml just deplo)",
+      "file_type": "document",
+      "source_file": "just/just.md",
+      "source_location": "L87",
+      "id": "just_just_codeblock_11",
+      "community": 5,
+      "norm_label": "code:bash (qqmail_rmcp_config_file=$home/secrets/qqmail.yaml just deplo)"
+    }
+  ],
+  "links": [
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_usage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_xml_escape",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_install_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_write_plist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L125",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_is_loaded",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_load_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_unload_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L146",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_deploy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L160",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_redeploy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L166",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_start",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L176",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_stop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L180",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_restart",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L190",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_delete_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L204",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_status",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L214",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_logs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L230",
+      "weight": 1.0,
+      "source": "just_qqmail_macos_service_sh",
+      "target": "just_qqmail_macos_service_plist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L130",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_load_service",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L140",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_unload_service",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L147",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_deploy",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L161",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_redeploy",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L167",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_start",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L181",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_restart",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L191",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_delete_service",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L205",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_status",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L215",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_logs",
+      "target": "just_qqmail_macos_service_require_macos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L90",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_write_plist",
+      "target": "just_qqmail_macos_service_xml_escape",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L148",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_deploy",
+      "target": "just_qqmail_macos_service_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L149",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_deploy",
+      "target": "just_qqmail_macos_service_install_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L150",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_deploy",
+      "target": "just_qqmail_macos_service_write_plist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L231",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_plist",
+      "target": "just_qqmail_macos_service_write_plist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L131",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_load_service",
+      "target": "just_qqmail_macos_service_is_loaded",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L141",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_unload_service",
+      "target": "just_qqmail_macos_service_is_loaded",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L206",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_status",
+      "target": "just_qqmail_macos_service_is_loaded",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L152",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_deploy",
+      "target": "just_qqmail_macos_service_load_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L172",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_start",
+      "target": "just_qqmail_macos_service_load_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L186",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_restart",
+      "target": "just_qqmail_macos_service_load_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L151",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_deploy",
+      "target": "just_qqmail_macos_service_unload_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L177",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_stop",
+      "target": "just_qqmail_macos_service_unload_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L192",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_delete_service",
+      "target": "just_qqmail_macos_service_unload_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L163",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_redeploy",
+      "target": "just_qqmail_macos_service_deploy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "just/qqmail-macos-service.sh",
+      "source_location": "L162",
+      "weight": 1.0,
+      "context": "call",
+      "source": "just_qqmail_macos_service_redeploy",
+      "target": "just_qqmail_macos_service_delete_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_appconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_mailaccountconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_mailprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_mailendpointconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_rawrootconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_rawmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_rawmailconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_rawmailaccountconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_rawmailendpointconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_parse_bind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_validate_account_id",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L95",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L108",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_normalize_endpoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_normalize_yaml_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L264",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_yaml_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L288",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_parse_yaml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L294",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_validate_missing_address",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L301",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_validate_empty_address",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L308",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_validate_empty_auth_code",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L315",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_validate_empty_access_token",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L322",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_validate_all_present",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L328",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_validate_blank_address_rejected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L335",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_validate_blank_auth_code_rejected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L342",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_validate_blank_access_token_rejected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L349",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_yaml_allows_multiple_accounts_without_default_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L357",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_yaml_applies_endpoint_defaults",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L367",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_yaml_rejects_unsupported_provider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L385",
+      "weight": 1.0,
+      "source": "src_config_rs",
+      "target": "src_config_test_yaml_rejects_invalid_account_id",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L170",
+      "weight": 1.0,
+      "source": "src_config_appconfig",
+      "target": "src_config_appconfig_from_env",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L185",
+      "weight": 1.0,
+      "source": "src_config_appconfig",
+      "target": "src_config_appconfig_from_yaml_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L194",
+      "weight": 1.0,
+      "source": "src_config_appconfig",
+      "target": "src_config_appconfig_from_legacy_env",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L249",
+      "weight": 1.0,
+      "source": "src_config_appconfig",
+      "target": "src_config_appconfig_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L253",
+      "weight": 1.0,
+      "source": "src_config_appconfig",
+      "target": "src_config_appconfig_auth_codes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "src_config_normalize_yaml_config",
+      "target": "src_config_parse_bind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L216",
+      "weight": 1.0,
+      "source": "src_config_appconfig_from_legacy_env",
+      "target": "src_config_parse_bind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L141",
+      "weight": 1.0,
+      "source": "src_config_normalize_yaml_config",
+      "target": "src_config_validate_account_id",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L142",
+      "weight": 1.0,
+      "source": "src_config_normalize_yaml_config",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L222",
+      "weight": 1.0,
+      "source": "src_config_appconfig_from_legacy_env",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L295",
+      "weight": 1.0,
+      "source": "src_config_test_validate_missing_address",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L302",
+      "weight": 1.0,
+      "source": "src_config_test_validate_empty_address",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L309",
+      "weight": 1.0,
+      "source": "src_config_test_validate_empty_auth_code",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L316",
+      "weight": 1.0,
+      "source": "src_config_test_validate_empty_access_token",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L323",
+      "weight": 1.0,
+      "source": "src_config_test_validate_all_present",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L329",
+      "weight": 1.0,
+      "source": "src_config_test_validate_blank_address_rejected",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L336",
+      "weight": 1.0,
+      "source": "src_config_test_validate_blank_auth_code_rejected",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L343",
+      "weight": 1.0,
+      "source": "src_config_test_validate_blank_access_token_rejected",
+      "target": "src_config_validate_required",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "src_config_normalize_yaml_config",
+      "target": "src_config_normalize_endpoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L191",
+      "weight": 1.0,
+      "source": "src_config_appconfig_from_yaml_path",
+      "target": "src_config_normalize_yaml_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L290",
+      "weight": 1.0,
+      "source": "src_config_parse_yaml",
+      "target": "src_config_normalize_yaml_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L175",
+      "weight": 1.0,
+      "source": "src_config_appconfig_from_env",
+      "target": "src_config_appconfig_from_yaml_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L182",
+      "weight": 1.0,
+      "source": "src_config_appconfig_from_env",
+      "target": "src_config_appconfig_from_legacy_env",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L359",
+      "weight": 1.0,
+      "source": "src_config_test_yaml_applies_endpoint_defaults",
+      "target": "src_config_appconfig_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L350",
+      "weight": 1.0,
+      "source": "src_config_test_yaml_allows_multiple_accounts_without_default_account",
+      "target": "src_config_yaml_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L358",
+      "weight": 1.0,
+      "source": "src_config_test_yaml_applies_endpoint_defaults",
+      "target": "src_config_yaml_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L350",
+      "weight": 1.0,
+      "source": "src_config_test_yaml_allows_multiple_accounts_without_default_account",
+      "target": "src_config_parse_yaml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L358",
+      "weight": 1.0,
+      "source": "src_config_test_yaml_applies_endpoint_defaults",
+      "target": "src_config_parse_yaml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L368",
+      "weight": 1.0,
+      "source": "src_config_test_yaml_rejects_unsupported_provider",
+      "target": "src_config_parse_yaml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/config.rs",
+      "source_location": "L386",
+      "weight": 1.0,
+      "source": "src_config_test_yaml_rejects_invalid_account_id",
+      "target": "src_config_parse_yaml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/error.rs",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_error_rs",
+      "target": "src_error_mailerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.rs",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "src_main_rs",
+      "target": "src_main_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.rs",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "src_main_rs",
+      "target": "src_main_auth_middleware",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_qqmailserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_sanitize_message_with_secrets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_tool_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_validate_uid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_validate_account_id_param",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L123",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_sendemailparams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_listmailboxesparams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L156",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_listmessagesparams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L170",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_getmessageparams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L182",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_deletemessageparams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L194",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_movemessageparams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L206",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_markmessageparams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L443",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L470",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_validate_uid_zero_rejected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L475",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_validate_uid_one_accepted",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L480",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_validate_uid_large_accepted",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L485",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_validate_uid_zero_returns_invalid_params",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L492",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_sanitize_message_preserves_text_when_secrets_unset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L500",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_sanitize_message_masks_configured_secrets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L510",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_sanitize_message_truncates_long_messages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L517",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_resolve_account_rejects_blank_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L525",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_resolve_account_rejects_unknown_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L533",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_resolve_account_accepts_known_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L540",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_tool_input_schemas_are_objects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L558",
+      "weight": 1.0,
+      "source": "src_mcp_rs",
+      "target": "src_mcp_test_tool_input_schemas_require_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L223",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L233",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_send_email",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L285",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_list_mailboxes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L299",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_list_messages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L328",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_get_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L349",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_delete_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L368",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_move_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L389",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_mark_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L419",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver",
+      "target": "src_mcp_qqmailserver_get_info",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L501",
+      "weight": 1.0,
+      "source": "src_mcp_test_sanitize_message_masks_configured_secrets",
+      "target": "src_mcp_sanitize_message_with_secrets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L511",
+      "weight": 1.0,
+      "source": "src_mcp_test_sanitize_message_truncates_long_messages",
+      "target": "src_mcp_sanitize_message_with_secrets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L106",
+      "weight": 1.0,
+      "source": "src_mcp_tool_error",
+      "target": "src_mcp_qqmailserver_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L280",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_send_email",
+      "target": "src_mcp_tool_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L292",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_list_mailboxes",
+      "target": "src_mcp_tool_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L321",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_list_messages",
+      "target": "src_mcp_tool_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L342",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_get_message",
+      "target": "src_mcp_tool_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L363",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_delete_message",
+      "target": "src_mcp_tool_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L382",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_move_message",
+      "target": "src_mcp_tool_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L412",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_mark_message",
+      "target": "src_mcp_tool_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L333",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_get_message",
+      "target": "src_mcp_validate_uid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L354",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_delete_message",
+      "target": "src_mcp_validate_uid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L373",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_move_message",
+      "target": "src_mcp_validate_uid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L400",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_mark_message",
+      "target": "src_mcp_validate_uid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L486",
+      "weight": 1.0,
+      "source": "src_mcp_test_validate_uid_zero_returns_invalid_params",
+      "target": "src_mcp_validate_uid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "src_mcp_resolve_account",
+      "target": "src_mcp_validate_account_id_param",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L237",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_send_email",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L289",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_list_mailboxes",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L303",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_list_messages",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L332",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_get_message",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L353",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_delete_message",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L372",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_move_message",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L393",
+      "weight": 1.0,
+      "source": "src_mcp_qqmailserver_mark_message",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L519",
+      "weight": 1.0,
+      "source": "src_mcp_test_resolve_account_rejects_blank_account",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L527",
+      "weight": 1.0,
+      "source": "src_mcp_test_resolve_account_rejects_unknown_account",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L535",
+      "weight": 1.0,
+      "source": "src_mcp_test_resolve_account_accepts_known_account",
+      "target": "src_mcp_resolve_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L444",
+      "weight": 1.0,
+      "source": "src_mcp_test_config",
+      "target": "src_mcp_qqmailserver_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L541",
+      "weight": 1.0,
+      "source": "src_mcp_test_tool_input_schemas_are_objects",
+      "target": "src_mcp_qqmailserver_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L559",
+      "weight": 1.0,
+      "source": "src_mcp_test_tool_input_schemas_require_account",
+      "target": "src_mcp_qqmailserver_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L518",
+      "weight": 1.0,
+      "source": "src_mcp_test_resolve_account_rejects_blank_account",
+      "target": "src_mcp_test_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L526",
+      "weight": 1.0,
+      "source": "src_mcp_test_resolve_account_rejects_unknown_account",
+      "target": "src_mcp_test_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L534",
+      "weight": 1.0,
+      "source": "src_mcp_test_resolve_account_accepts_known_account",
+      "target": "src_mcp_test_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L541",
+      "weight": 1.0,
+      "source": "src_mcp_test_tool_input_schemas_are_objects",
+      "target": "src_mcp_test_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mcp.rs",
+      "source_location": "L559",
+      "weight": 1.0,
+      "source": "src_mcp_test_tool_input_schemas_require_account",
+      "target": "src_mcp_test_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_listmessagesrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_default_mailbox",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_default_limit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_default_order",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_getmessagerequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_deletemessagerequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_default_expunge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_movemessagerequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_markmessagerequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_connect_imap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_list_mailboxes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L115",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_get_header_value",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L123",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_has_attachment_content_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L130",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_parse_email_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_flag_to_str",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L160",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_message_has_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L168",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_plan_flag_mutation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L182",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_assert_uid_exists",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L194",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_list_messages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L271",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_extract_text",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L283",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_extract_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L295",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_get_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L394",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_delete_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L433",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_move_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L471",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_mark_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L566",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_parse_email_headers_basic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L580",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_parse_email_headers_case_insensitive",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L590",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_parse_email_headers_missing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L598",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_parse_email_headers_empty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L605",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_has_attachment_content_type_multipart_mixed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L614",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_has_attachment_content_type_name_param",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L623",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_has_attachment_content_type_no_attachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L632",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_has_attachment_content_type_filename_param",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L641",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_has_attachment_content_type_case_insensitive_key",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L650",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_parse_email_headers_decodes_encoded_subject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L657",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_list_messages_offset_boundary_empty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L669",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_list_messages_offset_beyond_length",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L680",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_list_messages_offset_at_boundary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L691",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_list_messages_normal_pagination",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L704",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_plan_flag_mutation_skips_noop_false_for_absent_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L721",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_plan_flag_mutation_adds_only_missing_enabled_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L738",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_plan_flag_mutation_removes_only_present_disabled_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L755",
+      "weight": 1.0,
+      "source": "src_mail_imap_rs",
+      "target": "mail_imap_test_plan_flag_mutation_skips_omitted_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "mail_imap_list_mailboxes",
+      "target": "mail_imap_connect_imap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L200",
+      "weight": 1.0,
+      "source": "mail_imap_list_messages",
+      "target": "mail_imap_connect_imap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L301",
+      "weight": 1.0,
+      "source": "mail_imap_get_message",
+      "target": "mail_imap_connect_imap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L400",
+      "weight": 1.0,
+      "source": "mail_imap_delete_message",
+      "target": "mail_imap_connect_imap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L439",
+      "weight": 1.0,
+      "source": "mail_imap_move_message",
+      "target": "mail_imap_connect_imap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L477",
+      "weight": 1.0,
+      "source": "mail_imap_mark_message",
+      "target": "mail_imap_connect_imap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L338",
+      "weight": 1.0,
+      "source": "mail_imap_get_message",
+      "target": "mail_imap_get_header_value",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L231",
+      "weight": 1.0,
+      "source": "mail_imap_list_messages",
+      "target": "mail_imap_has_attachment_content_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L230",
+      "weight": 1.0,
+      "source": "mail_imap_list_messages",
+      "target": "mail_imap_parse_email_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L330",
+      "weight": 1.0,
+      "source": "mail_imap_get_message",
+      "target": "mail_imap_parse_email_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L568",
+      "weight": 1.0,
+      "source": "mail_imap_test_parse_email_headers_basic",
+      "target": "mail_imap_parse_email_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L582",
+      "weight": 1.0,
+      "source": "mail_imap_test_parse_email_headers_case_insensitive",
+      "target": "mail_imap_parse_email_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L592",
+      "weight": 1.0,
+      "source": "mail_imap_test_parse_email_headers_missing",
+      "target": "mail_imap_parse_email_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L599",
+      "weight": 1.0,
+      "source": "mail_imap_test_parse_email_headers_empty",
+      "target": "mail_imap_parse_email_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L652",
+      "weight": 1.0,
+      "source": "mail_imap_test_parse_email_headers_decodes_encoded_subject",
+      "target": "mail_imap_parse_email_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L495",
+      "weight": 1.0,
+      "source": "mail_imap_mark_message",
+      "target": "mail_imap_message_has_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L502",
+      "weight": 1.0,
+      "source": "mail_imap_mark_message",
+      "target": "mail_imap_plan_flag_mutation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L708",
+      "weight": 1.0,
+      "source": "mail_imap_test_plan_flag_mutation_skips_noop_false_for_absent_flag",
+      "target": "mail_imap_plan_flag_mutation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L725",
+      "weight": 1.0,
+      "source": "mail_imap_test_plan_flag_mutation_adds_only_missing_enabled_flag",
+      "target": "mail_imap_plan_flag_mutation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L742",
+      "weight": 1.0,
+      "source": "mail_imap_test_plan_flag_mutation_removes_only_present_disabled_flag",
+      "target": "mail_imap_plan_flag_mutation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L759",
+      "weight": 1.0,
+      "source": "mail_imap_test_plan_flag_mutation_skips_omitted_flag",
+      "target": "mail_imap_plan_flag_mutation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L408",
+      "weight": 1.0,
+      "source": "mail_imap_delete_message",
+      "target": "mail_imap_assert_uid_exists",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L447",
+      "weight": 1.0,
+      "source": "mail_imap_move_message",
+      "target": "mail_imap_assert_uid_exists",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L335",
+      "weight": 1.0,
+      "source": "mail_imap_get_message",
+      "target": "mail_imap_extract_text",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/imap.rs",
+      "source_location": "L336",
+      "weight": 1.0,
+      "source": "mail_imap_get_message",
+      "target": "mail_imap_extract_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/smtp.rs",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_mail_smtp_rs",
+      "target": "mail_smtp_sendemailrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/smtp.rs",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "src_mail_smtp_rs",
+      "target": "mail_smtp_build_mailer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mail/smtp.rs",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "src_mail_smtp_rs",
+      "target": "mail_smtp_send_email",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "agents_md",
+      "target": "qqmail_rmcp_agents_project_agent_instructions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_agents_project_agent_instructions",
+      "target": "qqmail_rmcp_agents_graphify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "readme_md",
+      "target": "qqmail_rmcp_readme_qqmail_rmcp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_qqmail_rmcp",
+      "target": "qqmail_rmcp_readme_\u529f\u80fd\u4ecb\u7ecd",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_qqmail_rmcp",
+      "target": "qqmail_rmcp_readme_mcp\u5de5\u5177\u4ecb\u7ecd",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_qqmail_rmcp",
+      "target": "qqmail_rmcp_readme_\u4f7f\u7528\u6559\u7a0b",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_\u4f7f\u7528\u6559\u7a0b",
+      "target": "qqmail_rmcp_readme_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_\u4f7f\u7528\u6559\u7a0b",
+      "target": "qqmail_rmcp_readme_codeblock_2",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_\u4f7f\u7528\u6559\u7a0b",
+      "target": "qqmail_rmcp_readme_codeblock_3",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_\u4f7f\u7528\u6559\u7a0b",
+      "target": "qqmail_rmcp_readme_codeblock_4",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_\u4f7f\u7528\u6559\u7a0b",
+      "target": "qqmail_rmcp_readme_codeblock_5",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "qqmail_rmcp_readme_\u4f7f\u7528\u6559\u7a0b",
+      "target": "qqmail_rmcp_readme_codeblock_6",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_md",
+      "target": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_overview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_mvp_scope",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_configuration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_legacy_environment_variables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_mcp_interface",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_tech_stack",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_project_structure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_security",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_running",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_qq_mail_mcp_server_mvp_architecture",
+      "target": "docs_mvp_architecture_mcp_client_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_mvp_scope",
+      "target": "docs_mvp_architecture_included",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_mvp_scope",
+      "target": "docs_mvp_architecture_excluded_post_mvp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_configuration",
+      "target": "docs_mvp_architecture_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_mcp_interface",
+      "target": "docs_mvp_architecture_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L99",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_project_structure",
+      "target": "docs_mvp_architecture_codeblock_2",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_running",
+      "target": "docs_mvp_architecture_codeblock_3",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/mvp-architecture.md",
+      "source_location": "L131",
+      "weight": 1.0,
+      "source": "docs_mvp_architecture_mcp_client_config",
+      "target": "docs_mvp_architecture_codeblock_4",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "just_just_md",
+      "target": "just_just_qqmail_rmcp_just_scripts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "just_just_qqmail_rmcp_just_scripts",
+      "target": "just_just_prerequisites",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "just_just_qqmail_rmcp_just_scripts",
+      "target": "just_just_common_commands",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "just_just_qqmail_rmcp_just_scripts",
+      "target": "just_just_paths_and_overrides",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "just_just_common_commands",
+      "target": "just_just_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "just_just_common_commands",
+      "target": "just_just_codeblock_2",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "just_just_common_commands",
+      "target": "just_just_codeblock_3",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "just_just_common_commands",
+      "target": "just_just_codeblock_4",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "just_just_common_commands",
+      "target": "just_just_codeblock_5",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "just_just_common_commands",
+      "target": "just_just_codeblock_6",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "just_just_common_commands",
+      "target": "just_just_codeblock_7",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "just_just_common_commands",
+      "target": "just_just_codeblock_8",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "just_just_paths_and_overrides",
+      "target": "just_just_codeblock_9",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "just_just_paths_and_overrides",
+      "target": "just_just_codeblock_10",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "just/just.md",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "just_just_paths_and_overrides",
+      "target": "just_just_codeblock_11",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "3cece13a5896f5a435f04f3201833ca4976c8f1e"
+}
