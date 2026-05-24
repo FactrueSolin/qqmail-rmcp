@@ -33,6 +33,7 @@ logs *args:
 
 test:
     @bash ./tests/imap_regression.sh
+    @bash ./tests/oauth_provider_acceptance.sh
 
 plist:
     @bash ./just/qqmail-macos-service.sh plist
