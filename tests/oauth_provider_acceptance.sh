@@ -65,6 +65,17 @@ require_absent config/qqmail.yaml.example 'refresh_token:' "sample account confi
 require_absent config/qqmail.yaml.example 'oauth_access_token:' "sample account config must not contain OAuth access tokens"
 pass "token persistence, refresh, and scope checks are isolated"
 
+echo "[oauth-provider-acceptance] verifying local OAuth start/callback state and code exchange"
+require_fixed src/main.rs '/oauth/start' "server must expose local OAuth start endpoint"
+require_fixed src/main.rs '/oauth/callback' "server must expose local OAuth callback endpoint"
+require_fixed src/mail/oauth.rs 'pub struct LocalOAuthStateStore' "OAuth state store must exist"
+require_fixed src/mail/oauth.rs 'response_type=code' "OAuth start must request authorization code flow"
+require_fixed src/mail/oauth.rs 'grant_type", "authorization_code"' "callback must exchange authorization code"
+require_fixed src/mail/oauth.rs 'consume_state' "callback must validate and consume state"
+require_fixed src/mail/oauth.rs 'provider != account.provider' "state must bind provider"
+require_fixed src/mail/oauth.rs 'account_id != account.id' "state must bind account id"
+pass "local OAuth authorization flow is present and state-bound"
+
 echo "[oauth-provider-acceptance] verifying MCP tools route through a backend trait with opaque IDs"
 require_fixed src/mail/backend.rs 'pub trait MailBackend' "mail backend trait must exist"
 require_fixed src/mail/backend.rs 'MailProvider::Gmail => Box::new(providers::GmailBackend::new(account, token_store_path))' "Gmail accounts must route to GmailBackend"
@@ -85,6 +96,9 @@ require_fixed src/mail/providers.rs 'messages/{}/trash' "Gmail delete must defau
 require_fixed src/mail/providers.rs 'messages/{}/modify' "Gmail move/mark must use label modify"
 require_fixed src/mail/providers.rs 'addLabelIds' "Gmail move/mark must add labels"
 require_fixed src/mail/providers.rs 'removeLabelIds' "Gmail move/mark must remove labels"
+require_fixed src/mail/providers.rs 'reject_header_injection' "Gmail MIME builder must reject header CRLF injection"
+require_fixed src/mail/providers.rs 'encode_header_value' "Gmail MIME builder must RFC-encode non-ASCII headers"
+require_fixed src/mail/providers.rs 'gmail_mark_seen_body' "Gmail get_message(mark_seen=true) must remove UNREAD"
 pass "Gmail backend maps tools to Gmail API"
 
 echo "[oauth-provider-acceptance] verifying Microsoft Graph operation mapping"
@@ -95,6 +109,9 @@ require_fixed src/mail/providers.rs 'destinationId": "deleteditems"' "Outlook de
 require_fixed src/mail/providers.rs 'messages/{}/move' "Outlook move/delete must use Graph move"
 require_fixed src/mail/providers.rs '"isRead"' "Outlook mark read must patch isRead"
 require_fixed src/mail/providers.rs '"flagStatus"' "Outlook mark flagged must patch flagStatus"
+require_fixed src/mail/providers.rs 'decode_graph_cursor' "Outlook cursor must be decoded from an opaque value"
+require_fixed src/mail/providers.rs 'validate_graph_next_link' "Outlook cursor must validate Graph nextLink host/path"
+require_fixed src/mail/providers.rs 'graph_mark_seen_body' "Outlook get_message(mark_seen=true) must patch isRead"
 pass "Outlook backend maps tools to Microsoft Graph"
 
 echo "[oauth-provider-acceptance] verifying unified provider error codes"

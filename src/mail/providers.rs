@@ -7,7 +7,7 @@ use crate::mail::backend::{
 use crate::mail::oauth::AccessTokenProvider;
 use async_trait::async_trait;
 use base64::Engine;
-use base64::engine::general_purpose::URL_SAFE_NO_PAD;
+use base64::engine::general_purpose::{STANDARD, URL_SAFE_NO_PAD};
 use serde_json::json;
 use std::path::PathBuf;
 
@@ -166,6 +166,17 @@ impl MailBackend for GmailBackend {
                 &token,
             )
             .await?;
+        if req.mark_seen {
+            self.post_json(
+                &format!(
+                    "https://gmail.googleapis.com/gmail/v1/users/me/messages/{}/modify",
+                    req.message_id
+                ),
+                &token,
+                gmail_mark_seen_body(),
+            )
+            .await?;
+        }
         Ok(normalize_gmail_message(&self.account, &req.mailbox_id, &value).to_string())
     }
 
@@ -260,12 +271,13 @@ impl MailBackend for OutlookBackend {
             .tokens
             .get(&self.account, &[GRAPH_READWRITE_SCOPE])
             .await?;
-        let url = req.cursor.unwrap_or_else(|| {
-            format!(
+        let url = match req.cursor {
+            Some(cursor) => decode_graph_cursor(&cursor)?,
+            None => format!(
                 "https://graph.microsoft.com/v1.0/me/mailFolders/{}/messages?$top={}",
                 req.mailbox_id, req.limit
-            )
-        });
+            ),
+        };
         let value = self.get_json(&url, &token).await?;
         let messages = value
             .get("value")
@@ -282,7 +294,7 @@ impl MailBackend for OutlookBackend {
             "account": self.account.id,
             "mailbox_id": req.mailbox_id,
             "messages": messages,
-            "cursor": value.get("@odata.nextLink").cloned().unwrap_or_default(),
+            "cursor": value.get("@odata.nextLink").and_then(|v| v.as_str()).map(encode_graph_cursor),
         })
         .to_string())
     }
@@ -301,6 +313,17 @@ impl MailBackend for OutlookBackend {
                 &token,
             )
             .await?;
+        if req.mark_seen {
+            self.patch_json(
+                &format!(
+                    "https://graph.microsoft.com/v1.0/me/messages/{}",
+                    req.message_id
+                ),
+                &token,
+                graph_mark_seen_body(),
+            )
+            .await?;
+        }
         Ok(normalize_graph_message(&self.account, &req.mailbox_id, &value).to_string())
     }
 
@@ -446,11 +469,21 @@ fn build_rfc822_message(
     req: &SendEmailRequest,
 ) -> Result<String, MailError> {
     let from = account.address.as_deref().unwrap_or("me");
+    reject_header_injection("from", from)?;
+    reject_header_injection("subject", &req.subject)?;
+    for address in req
+        .to
+        .iter()
+        .chain(req.cc.iter().flatten())
+        .chain(req.bcc.iter().flatten())
+    {
+        reject_header_injection("recipient", address)?;
+    }
     let mut message = format!(
         "From: {}\r\nTo: {}\r\nSubject: {}\r\n",
         from,
         req.to.join(", "),
-        req.subject
+        encode_header_value(&req.subject)
     );
     if let Some(cc) = &req.cc {
         message.push_str(&format!("Cc: {}\r\n", cc.join(", ")));
@@ -464,6 +497,52 @@ fn build_rfc822_message(
         message.push_str(req.text.as_deref().unwrap_or_default());
     }
     Ok(message)
+}
+
+fn reject_header_injection(field: &str, value: &str) -> Result<(), MailError> {
+    if value.contains('\r') || value.contains('\n') {
+        return Err(MailError::ProviderApiError(format!(
+            "{} must not contain CR or LF",
+            field
+        )));
+    }
+    Ok(())
+}
+
+fn encode_header_value(value: &str) -> String {
+    if value.is_ascii() {
+        value.to_string()
+    } else {
+        format!("=?UTF-8?B?{}?=", STANDARD.encode(value.as_bytes()))
+    }
+}
+
+fn encode_graph_cursor(next_link: &str) -> String {
+    URL_SAFE_NO_PAD.encode(next_link.as_bytes())
+}
+
+fn decode_graph_cursor(cursor: &str) -> Result<String, MailError> {
+    let bytes = URL_SAFE_NO_PAD
+        .decode(cursor)
+        .map_err(|_| MailError::ProviderApiError("invalid Graph cursor".into()))?;
+    let next_link = String::from_utf8(bytes)
+        .map_err(|_| MailError::ProviderApiError("invalid Graph cursor".into()))?;
+    validate_graph_next_link(&next_link)?;
+    Ok(next_link)
+}
+
+fn validate_graph_next_link(next_link: &str) -> Result<(), MailError> {
+    let url = reqwest::Url::parse(next_link)
+        .map_err(|_| MailError::ProviderApiError("invalid Graph cursor".into()))?;
+    let valid = url.scheme() == "https"
+        && url.host_str() == Some("graph.microsoft.com")
+        && url.path().starts_with("/v1.0/me/mailFolders/")
+        && url.path().ends_with("/messages");
+    if valid {
+        Ok(())
+    } else {
+        Err(MailError::ProviderApiError("invalid Graph cursor".into()))
+    }
 }
 
 fn graph_message(req: &SendEmailRequest) -> serde_json::Value {
@@ -482,6 +561,14 @@ fn graph_message(req: &SendEmailRequest) -> serde_json::Value {
         },
         "saveToSentItems": true
     })
+}
+
+fn gmail_mark_seen_body() -> serde_json::Value {
+    json!({ "removeLabelIds": ["UNREAD"] })
+}
+
+fn graph_mark_seen_body() -> serde_json::Value {
+    json!({ "isRead": true })
 }
 
 fn push_label(
@@ -575,4 +662,85 @@ fn header(headers: &[serde_json::Value], name: &str) -> serde_json::Value {
         .and_then(|header| header.get("value"))
         .cloned()
         .unwrap_or_default()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::config::MailProvider;
+
+    fn gmail_account() -> MailAccountConfig {
+        MailAccountConfig {
+            id: "gmail".into(),
+            provider: MailProvider::Gmail,
+            address: Some("sender@example.com".into()),
+            auth_code: None,
+            smtp: None,
+            imap: None,
+            oauth: None,
+        }
+    }
+
+    fn send_req(subject: &str) -> SendEmailRequest {
+        SendEmailRequest {
+            to: vec!["to@example.com".into()],
+            cc: None,
+            bcc: None,
+            subject: subject.into(),
+            text: Some("body".into()),
+            html: None,
+        }
+    }
+
+    #[test]
+    fn gmail_mime_rejects_subject_header_injection() {
+        let err = build_rfc822_message(
+            &gmail_account(),
+            &send_req("hello\r\nBcc: attacker@example.com"),
+        )
+        .unwrap_err();
+        assert!(
+            err.to_string()
+                .contains("subject must not contain CR or LF")
+        );
+    }
+
+    #[test]
+    fn gmail_mime_rejects_recipient_header_injection() {
+        let mut req = send_req("hello");
+        req.to = vec!["victim@example.com\nBcc: attacker@example.com".into()];
+        let err = build_rfc822_message(&gmail_account(), &req).unwrap_err();
+        assert!(
+            err.to_string()
+                .contains("recipient must not contain CR or LF")
+        );
+    }
+
+    #[test]
+    fn gmail_mime_encodes_non_ascii_subject() {
+        let message = build_rfc822_message(&gmail_account(), &send_req("你好")).unwrap();
+        assert!(message.contains("Subject: =?UTF-8?B?"));
+        assert!(!message.contains("Subject: 你好"));
+    }
+
+    #[test]
+    fn graph_cursor_is_opaque_and_validates_host() {
+        let link = "https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$skiptoken=abc";
+        let cursor = encode_graph_cursor(link);
+        assert_ne!(cursor, link);
+        assert_eq!(decode_graph_cursor(&cursor).unwrap(), link);
+
+        let attacker =
+            encode_graph_cursor("https://attacker.example/v1.0/me/mailFolders/inbox/messages");
+        assert!(decode_graph_cursor(&attacker).is_err());
+    }
+
+    #[test]
+    fn mark_seen_bodies_match_provider_apis() {
+        assert_eq!(
+            gmail_mark_seen_body(),
+            json!({ "removeLabelIds": ["UNREAD"] })
+        );
+        assert_eq!(graph_mark_seen_body(), json!({ "isRead": true }));
+    }
 }
