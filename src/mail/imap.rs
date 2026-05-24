@@ -72,13 +72,19 @@ pub struct MarkMessageRequest {
 
 fn connect_imap(account: &MailAccountConfig) -> Result<ImapSession, MailError> {
     debug_assert_eq!(account.provider, crate::config::MailProvider::Qq);
+    let imap = account.imap.as_ref().expect("QQ IMAP config is required");
+    let address = account.address.as_ref().expect("QQ address is required");
+    let auth_code = account
+        .auth_code
+        .as_ref()
+        .expect("QQ auth_code is required");
     let tls = native_tls::TlsConnector::builder().build()?;
-    let addr = format!("{}:{}", account.imap.host, account.imap.port);
-    let session = imap::connect(&addr, &account.imap.host, &tls)
-        .map_err(|e| MailError::ImapLogin(e.to_string()))?;
+    let addr = format!("{}:{}", imap.host, imap.port);
+    let session =
+        imap::connect(&addr, &imap.host, &tls).map_err(|e| MailError::ImapLogin(e.to_string()))?;
 
     session
-        .login(&account.address, &account.auth_code)
+        .login(address, auth_code)
         .map_err(|(e, _)| MailError::ImapLogin(e.to_string()))
 }
 

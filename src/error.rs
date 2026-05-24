@@ -2,6 +2,24 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum MailError {
+    #[error("Account not found: {0}")]
+    AccountNotFound(String),
+
+    #[error("OAuth token is missing or expired")]
+    OAuthNotAuthorized,
+
+    #[error("OAuth token refresh failed; reauthorization required")]
+    ReauthorizationRequired,
+
+    #[error("OAuth token does not include required scope: {0}")]
+    InsufficientScope(String),
+
+    #[error("Provider rate limited the request")]
+    ProviderRateLimited,
+
+    #[error("Provider API error: {0}")]
+    ProviderApiError(String),
+
     #[error("SMTP error: {0}")]
     Smtp(#[from] lettre::transport::smtp::Error),
 

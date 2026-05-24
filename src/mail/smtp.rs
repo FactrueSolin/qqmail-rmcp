@@ -25,13 +25,16 @@ pub type Mailer = AsyncSmtpTransport<Tokio1Executor>;
 
 pub fn build_mailer(account: &MailAccountConfig) -> Mailer {
     debug_assert_eq!(account.provider, crate::config::MailProvider::Qq);
-    AsyncSmtpTransport::<Tokio1Executor>::relay(&account.smtp.host)
+    let smtp = account.smtp.as_ref().expect("QQ SMTP config is required");
+    let address = account.address.as_ref().expect("QQ address is required");
+    let auth_code = account
+        .auth_code
+        .as_ref()
+        .expect("QQ auth_code is required");
+    AsyncSmtpTransport::<Tokio1Executor>::relay(&smtp.host)
         .unwrap()
-        .credentials(Credentials::new(
-            account.address.clone(),
-            account.auth_code.clone(),
-        ))
-        .port(account.smtp.port)
+        .credentials(Credentials::new(address.clone(), auth_code.clone()))
+        .port(smtp.port)
         .build()
 }
 
@@ -42,6 +45,8 @@ pub async fn send_email(
 ) -> Result<(bool, Option<String>), MailError> {
     let from: Mailbox = account
         .address
+        .as_ref()
+        .ok_or_else(|| MailError::ProviderApiError("QQ account address is missing".into()))?
         .parse()
         .map_err(|e: AddressError| MailError::AddressParse(e.to_string()))?;
 

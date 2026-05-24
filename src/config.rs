@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::net::SocketAddr;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 const DEFAULT_ACCOUNT_ID: &str = "default";
 const DEFAULT_CONFIG_PATH: &str = "config/qqmail.yaml";
@@ -15,27 +15,51 @@ const DEFAULT_IMAP_PORT: u16 = 993;
 pub struct AppConfig {
     pub mcp_bind: SocketAddr,
     pub mcp_access_token: String,
+    pub token_store_path: PathBuf,
     pub accounts: BTreeMap<String, MailAccountConfig>,
 }
 
 #[derive(Clone, Debug)]
 pub struct MailAccountConfig {
+    pub id: String,
     pub provider: MailProvider,
-    pub address: String,
-    pub auth_code: String,
-    pub smtp: MailEndpointConfig,
-    pub imap: MailEndpointConfig,
+    pub address: Option<String>,
+    pub auth_code: Option<String>,
+    pub smtp: Option<MailEndpointConfig>,
+    pub imap: Option<MailEndpointConfig>,
+    pub oauth: Option<OAuthConfig>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum MailProvider {
     Qq,
+    Gmail,
+    Outlook,
+}
+
+impl MailProvider {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            MailProvider::Qq => "qq",
+            MailProvider::Gmail => "gmail",
+            MailProvider::Outlook => "outlook",
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
 pub struct MailEndpointConfig {
     pub host: String,
     pub port: u16,
+}
+
+#[derive(Clone, Debug)]
+pub struct OAuthConfig {
+    pub client_id: String,
+    pub client_secret: Option<String>,
+    pub redirect_uri: String,
+    pub scopes: Vec<String>,
+    pub tenant_id: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -48,6 +72,7 @@ struct RawRootConfig {
 struct RawMcpConfig {
     bind: Option<String>,
     access_token: String,
+    token_store_path: Option<PathBuf>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -58,10 +83,20 @@ struct RawMailConfig {
 #[derive(Debug, Deserialize)]
 struct RawMailAccountConfig {
     provider: String,
-    address: String,
-    auth_code: String,
+    address: Option<String>,
+    auth_code: Option<String>,
     smtp: Option<RawMailEndpointConfig>,
     imap: Option<RawMailEndpointConfig>,
+    oauth: Option<RawOAuthConfig>,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawOAuthConfig {
+    client_id: String,
+    client_secret: Option<String>,
+    redirect_uri: String,
+    scopes: Option<Vec<String>>,
+    tenant_id: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -92,17 +127,77 @@ fn validate_account_id(id: &str) -> Result<(), String> {
     Ok(())
 }
 
-fn validate_required(address: &str, auth_code: &str, mcp_access_token: &str) -> Result<(), String> {
-    if address.trim().is_empty() {
-        return Err("mail account address must not be empty".into());
+fn default_token_store_path() -> PathBuf {
+    dirs::data_local_dir()
+        .unwrap_or_else(|| PathBuf::from("."))
+        .join("qqmail-rmcp")
+        .join("tokens.json")
+}
+
+fn parse_provider(value: &str) -> Result<MailProvider, String> {
+    match value {
+        "qq" => Ok(MailProvider::Qq),
+        "gmail" => Ok(MailProvider::Gmail),
+        "outlook" => Ok(MailProvider::Outlook),
+        _ => Err("provider must be one of qq, gmail, outlook".into()),
     }
-    if auth_code.trim().is_empty() {
-        return Err("mail account auth_code must not be empty".into());
-    }
+}
+
+fn validate_mcp_access_token(mcp_access_token: &str) -> Result<(), String> {
     if mcp_access_token.trim().is_empty() {
         return Err("mcp.access_token must not be empty".into());
     }
     Ok(())
+}
+
+fn validate_qq_required(address: Option<&str>, auth_code: Option<&str>) -> Result<(), String> {
+    if address.unwrap_or_default().trim().is_empty() {
+        return Err("mail account address must not be empty".into());
+    }
+    if auth_code.unwrap_or_default().trim().is_empty() {
+        return Err("mail account auth_code must not be empty".into());
+    }
+    Ok(())
+}
+
+fn validate_oauth(
+    provider: &MailProvider,
+    oauth: Option<RawOAuthConfig>,
+) -> Result<OAuthConfig, String> {
+    let oauth =
+        oauth.ok_or_else(|| format!("{} account requires oauth config", provider.as_str()))?;
+    if oauth.client_id.trim().is_empty() {
+        return Err("oauth.client_id must not be empty".into());
+    }
+    if oauth.redirect_uri.trim().is_empty() {
+        return Err("oauth.redirect_uri must not be empty".into());
+    }
+    let scopes = oauth.scopes.unwrap_or_else(|| match provider {
+        MailProvider::Gmail => vec![
+            "openid".into(),
+            "email".into(),
+            "profile".into(),
+            "https://www.googleapis.com/auth/gmail.modify".into(),
+            "https://www.googleapis.com/auth/gmail.send".into(),
+        ],
+        MailProvider::Outlook => vec![
+            "openid".into(),
+            "email".into(),
+            "profile".into(),
+            "User.Read".into(),
+            "offline_access".into(),
+            "Mail.ReadWrite".into(),
+            "Mail.Send".into(),
+        ],
+        MailProvider::Qq => Vec::new(),
+    });
+    Ok(OAuthConfig {
+        client_id: oauth.client_id,
+        client_secret: oauth.client_secret,
+        redirect_uri: oauth.redirect_uri,
+        scopes,
+        tenant_id: oauth.tenant_id,
+    })
 }
 
 fn normalize_endpoint(
@@ -132,29 +227,49 @@ fn normalize_yaml_config(raw: RawRootConfig) -> Result<AppConfig, String> {
 
     let mcp_bind = parse_bind(raw.mcp.bind.as_deref().unwrap_or(DEFAULT_MCP_BIND))?;
     let mcp_access_token = raw.mcp.access_token;
-    if mcp_access_token.trim().is_empty() {
-        return Err("mcp.access_token must not be empty".into());
-    }
+    validate_mcp_access_token(&mcp_access_token)?;
+    let token_store_path = raw
+        .mcp
+        .token_store_path
+        .unwrap_or_else(default_token_store_path);
 
     let mut accounts = BTreeMap::new();
     for (id, account) in raw.mail.accounts {
         validate_account_id(&id)?;
-        validate_required(&account.address, &account.auth_code, &mcp_access_token)?;
-        if account.provider != "qq" {
-            return Err("Only provider \"qq\" is supported".into());
-        }
-
-        let smtp = normalize_endpoint(account.smtp, DEFAULT_SMTP_HOST, DEFAULT_SMTP_PORT)?;
-        let imap = normalize_endpoint(account.imap, DEFAULT_IMAP_HOST, DEFAULT_IMAP_PORT)?;
+        let provider = parse_provider(&account.provider)?;
+        let (smtp, imap, oauth) = match provider {
+            MailProvider::Qq => {
+                validate_qq_required(account.address.as_deref(), account.auth_code.as_deref())?;
+                (
+                    Some(normalize_endpoint(
+                        account.smtp,
+                        DEFAULT_SMTP_HOST,
+                        DEFAULT_SMTP_PORT,
+                    )?),
+                    Some(normalize_endpoint(
+                        account.imap,
+                        DEFAULT_IMAP_HOST,
+                        DEFAULT_IMAP_PORT,
+                    )?),
+                    None,
+                )
+            }
+            MailProvider::Gmail | MailProvider::Outlook => {
+                let oauth = validate_oauth(&provider, account.oauth)?;
+                (None, None, Some(oauth))
+            }
+        };
 
         accounts.insert(
-            id,
+            id.clone(),
             MailAccountConfig {
-                provider: MailProvider::Qq,
+                id,
+                provider,
                 address: account.address,
                 auth_code: account.auth_code,
                 smtp,
                 imap,
+                oauth,
             },
         );
     }
@@ -162,6 +277,7 @@ fn normalize_yaml_config(raw: RawRootConfig) -> Result<AppConfig, String> {
     Ok(AppConfig {
         mcp_bind,
         mcp_access_token,
+        token_store_path,
         accounts,
     })
 }
@@ -219,29 +335,33 @@ impl AppConfig {
         let mcp_access_token =
             std::env::var("MCP_ACCESS_TOKEN").map_err(|_| "MCP_ACCESS_TOKEN is required")?;
 
-        validate_required(&address, &auth_code, &mcp_access_token)?;
+        validate_mcp_access_token(&mcp_access_token)?;
+        validate_qq_required(Some(&address), Some(&auth_code))?;
 
         let mut accounts = BTreeMap::new();
         accounts.insert(
             DEFAULT_ACCOUNT_ID.into(),
             MailAccountConfig {
+                id: DEFAULT_ACCOUNT_ID.into(),
                 provider: MailProvider::Qq,
-                address,
-                auth_code,
-                smtp: MailEndpointConfig {
+                address: Some(address),
+                auth_code: Some(auth_code),
+                smtp: Some(MailEndpointConfig {
                     host: smtp_host,
                     port: smtp_port,
-                },
-                imap: MailEndpointConfig {
+                }),
+                imap: Some(MailEndpointConfig {
                     host: imap_host,
                     port: imap_port,
-                },
+                }),
+                oauth: None,
             },
         );
 
         Ok(Self {
             mcp_bind,
             mcp_access_token,
+            token_store_path: default_token_store_path(),
             accounts,
         })
     }
@@ -253,7 +373,13 @@ impl AppConfig {
     pub fn auth_codes(&self) -> impl Iterator<Item = &str> {
         self.accounts
             .values()
-            .map(|account| account.auth_code.as_str())
+            .filter_map(|account| account.auth_code.as_deref())
+            .chain(
+                self.accounts
+                    .values()
+                    .filter_map(|account| account.oauth.as_ref())
+                    .filter_map(|oauth| oauth.client_secret.as_deref()),
+            )
     }
 }
 
@@ -292,55 +418,55 @@ mail:
 
     #[test]
     fn test_validate_missing_address() {
-        let result = validate_required("", "code", "token");
+        let result = validate_qq_required(Some(""), Some("code"));
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("address"));
     }
 
     #[test]
     fn test_validate_empty_address() {
-        let result = validate_required("", "code", "token");
+        let result = validate_qq_required(Some(""), Some("code"));
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("must not be empty"));
     }
 
     #[test]
     fn test_validate_empty_auth_code() {
-        let result = validate_required("test@qq.com", "", "token");
+        let result = validate_qq_required(Some("test@qq.com"), Some(""));
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("auth_code"));
     }
 
     #[test]
     fn test_validate_empty_access_token() {
-        let result = validate_required("test@qq.com", "code", "");
+        let result = validate_mcp_access_token("");
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("access_token"));
     }
 
     #[test]
     fn test_validate_all_present() {
-        let result = validate_required("test@qq.com", "code", "token");
+        let result = validate_qq_required(Some("test@qq.com"), Some("code"));
         assert!(result.is_ok());
     }
 
     #[test]
     fn test_validate_blank_address_rejected() {
-        let result = validate_required("   ", "code", "token");
+        let result = validate_qq_required(Some("   "), Some("code"));
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("address"));
     }
 
     #[test]
     fn test_validate_blank_auth_code_rejected() {
-        let result = validate_required("test@qq.com", "\t", "token");
+        let result = validate_qq_required(Some("test@qq.com"), Some("\t"));
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("auth_code"));
     }
 
     #[test]
     fn test_validate_blank_access_token_rejected() {
-        let result = validate_required("test@qq.com", "code", "\n");
+        let result = validate_mcp_access_token("\n");
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("access_token"));
     }
@@ -357,10 +483,12 @@ mail:
     fn test_yaml_applies_endpoint_defaults() {
         let config = parse_yaml(yaml_config()).unwrap();
         let personal = config.account("personal").unwrap();
-        assert_eq!(personal.smtp.host, "smtp.qq.com");
-        assert_eq!(personal.smtp.port, 465);
-        assert_eq!(personal.imap.host, "imap.qq.com");
-        assert_eq!(personal.imap.port, 993);
+        let smtp = personal.smtp.as_ref().unwrap();
+        let imap = personal.imap.as_ref().unwrap();
+        assert_eq!(smtp.host, "smtp.qq.com");
+        assert_eq!(smtp.port, 465);
+        assert_eq!(imap.host, "imap.qq.com");
+        assert_eq!(imap.port, 993);
     }
 
     #[test]
@@ -378,7 +506,7 @@ mail:
 "#,
         );
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("Only provider"));
+        assert!(result.unwrap_err().contains("oauth config"));
     }
 
     #[test]
