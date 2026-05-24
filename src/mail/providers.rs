@@ -488,6 +488,9 @@ fn build_rfc822_message(
     if let Some(cc) = &req.cc {
         message.push_str(&format!("Cc: {}\r\n", cc.join(", ")));
     }
+    if let Some(bcc) = &req.bcc {
+        message.push_str(&format!("Bcc: {}\r\n", bcc.join(", ")));
+    }
     message.push_str("MIME-Version: 1.0\r\n");
     if let Some(html) = &req.html {
         message.push_str("Content-Type: text/html; charset=utf-8\r\n\r\n");
@@ -721,6 +724,15 @@ mod tests {
         let message = build_rfc822_message(&gmail_account(), &send_req("你好")).unwrap();
         assert!(message.contains("Subject: =?UTF-8?B?"));
         assert!(!message.contains("Subject: 你好"));
+    }
+
+    #[test]
+    fn gmail_mime_includes_checked_bcc_header() {
+        let mut req = send_req("hello");
+        req.bcc = Some(vec!["hidden@example.com".into()]);
+        let message = build_rfc822_message(&gmail_account(), &req).unwrap();
+
+        assert!(message.contains("\r\nBcc: hidden@example.com\r\n"));
     }
 
     #[test]
