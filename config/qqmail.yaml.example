@@ -1,6 +1,8 @@
 mcp:
   bind: 127.0.0.1:3000
   access_token: your_secret_access_token_here
+  # OAuth access/refresh tokens are stored here, not in account config.
+  token_store_path: ./config/tokens.local.json
 
 mail:
   accounts:
@@ -25,3 +27,20 @@ mail:
       imap:
         host: imap.qq.com
         port: 993
+
+    gmail:
+      provider: gmail
+      address: your_account@gmail.com
+      oauth:
+        client_id: your_google_oauth_client_id
+        client_secret: your_google_oauth_client_secret
+        redirect_uri: http://127.0.0.1:3000/oauth/callback
+
+    outlook:
+      provider: outlook
+      address: your_account@outlook.com
+      oauth:
+        client_id: your_microsoft_app_client_id
+        client_secret: your_microsoft_app_client_secret
+        redirect_uri: http://127.0.0.1:3000/oauth/callback
+        tenant_id: common

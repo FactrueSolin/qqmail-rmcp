@@ -7,10 +7,15 @@ use axum::Router;
 use axum::body::Body;
 use axum::http::{Request, StatusCode};
 use axum::middleware::Next;
-use axum::response::{IntoResponse, Response};
+use axum::response::{IntoResponse, Redirect, Response};
+use axum::{Json, extract::Query, extract::State, routing::get};
+use mail::oauth::{
+    LocalOAuthStateStore, OAuthCallbackQuery, account_id_from_state, complete_local_oauth_callback,
+};
 use mcp::QqMailServer;
 use rmcp::transport::streamable_http_server::StreamableHttpService;
 use rmcp::transport::streamable_http_server::session::local::LocalSessionManager;
+use serde::Deserialize;
 use std::sync::Arc;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -47,6 +52,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     let config = Arc::new(config);
+    let oauth_states = Arc::new(LocalOAuthStateStore::default());
 
     let service = StreamableHttpService::new(
         {
@@ -57,9 +63,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Default::default(),
     );
 
-    let mcp_router = Router::new().nest_service("/mcp", service).route_layer(
+    let state = Arc::new(HttpState {
+        config: config.clone(),
+        oauth_states,
+    });
+
+    let mcp_service_router = Router::new().nest_service("/mcp", service).route_layer(
         axum::middleware::from_fn_with_state(token.clone(), auth_middleware),
     );
+    let mcp_router = Router::new()
+        .merge(mcp_service_router)
+        .route(
+            "/oauth/start",
+            get(oauth_start).route_layer(axum::middleware::from_fn_with_state(
+                token.clone(),
+                auth_middleware,
+            )),
+        )
+        .route("/oauth/callback", get(oauth_callback))
+        .with_state(state);
 
     let listener = tokio::net::TcpListener::bind(bind_addr).await?;
 
@@ -73,6 +95,83 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await?;
 
     Ok(())
+}
+
+struct HttpState {
+    config: Arc<config::AppConfig>,
+    oauth_states: Arc<LocalOAuthStateStore>,
+}
+
+#[derive(Deserialize)]
+struct OAuthStartQuery {
+    account: String,
+}
+
+async fn oauth_start(
+    State(state): State<Arc<HttpState>>,
+    Query(query): Query<OAuthStartQuery>,
+) -> Response {
+    let Some(account) = state.config.account(query.account.trim()) else {
+        return (
+            StatusCode::NOT_FOUND,
+            Json(serde_json::json!({ "error": "account_not_found" })),
+        )
+            .into_response();
+    };
+    match state.oauth_states.authorization_url(account) {
+        Ok(url) => Redirect::temporary(&url).into_response(),
+        Err(e) => (
+            StatusCode::BAD_REQUEST,
+            Json(serde_json::json!({ "error": "oauth_start_failed", "message": e.to_string() })),
+        )
+            .into_response(),
+    }
+}
+
+async fn oauth_callback(
+    State(state): State<Arc<HttpState>>,
+    Query(query): Query<OAuthCallbackQuery>,
+) -> Response {
+    let Ok(account_id) = account_id_from_state(&query.state) else {
+        return (
+            StatusCode::UNAUTHORIZED,
+            Json(serde_json::json!({ "error": "invalid_oauth_state" })),
+        )
+            .into_response();
+    };
+    let Some(account) = state.config.account(&account_id) else {
+        return (
+            StatusCode::UNAUTHORIZED,
+            Json(serde_json::json!({ "error": "invalid_oauth_state" })),
+        )
+            .into_response();
+    };
+    let callback = OAuthCallbackQuery {
+        state: query.state,
+        code: query.code,
+        error: query.error,
+    };
+    match complete_local_oauth_callback(
+        &state.oauth_states,
+        state.config.token_store_path.clone(),
+        account,
+        callback,
+    )
+    .await
+    {
+        Ok(token) => Json(serde_json::json!({
+            "status": "authorized",
+            "account": token.account_id,
+            "provider": token.provider,
+            "scopes": token.scopes,
+        }))
+        .into_response(),
+        Err(e) => (
+            StatusCode::BAD_REQUEST,
+            Json(serde_json::json!({ "error": "oauth_callback_failed", "message": e.to_string() })),
+        )
+            .into_response(),
+    }
 }
 
 async fn auth_middleware(
